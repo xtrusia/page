@@ -27,7 +27,7 @@ url: "seyeong.kim" # the base hostname & protocol for your site, e.g. http://exa
 github_username:  xtrusia
 
 # Build settings
-theme: leap-day
+theme: jekyll-theme-leap-day
 plugins:
   - jekyll-feed
 
