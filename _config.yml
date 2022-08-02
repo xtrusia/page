@@ -27,10 +27,9 @@ url: "seyeong.kim" # the base hostname & protocol for your site, e.g. http://exa
 github_username:  xtrusia
 
 # Build settings
-remote_theme: pages-themes/leap-day@v0.2.0
+theme: leap-day
 plugins:
   - jekyll-feed
-  - jekyll-remote-theme
 
 # Exclude from processing.
 # The following items will not be processed, by default.
