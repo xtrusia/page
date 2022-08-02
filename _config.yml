@@ -28,7 +28,7 @@ github_username:  xtrusia
 
 # Build settings
 theme: jekyll-theme-leap-day
-remote_theme : mmistakes/minimal-mistakes
+remote_theme : "mmistakes/minimal-mistakes@4.13.0"
 plugins:
   - jekyll-feed
   - jekyll-remote-theme
