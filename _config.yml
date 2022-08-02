@@ -18,12 +18,12 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Seyeong Kim
+title: Anything logs
 email: seyeong.kim@canonical.com
 description: >- # this means to ignore newlines until "baseurl:"
-  Hello. This is Seyeong Kim's Tech Blog.
+  Nothing Special
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "seyeong.kim" # the base hostname & protocol for your site, e.g. http://example.com
+url: "http://seyeong.kim" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  xtrusia
 
 # Build settings
