@@ -23,9 +23,8 @@ email: seyeong.kim@canonical.com
 description: >- # this means to ignore newlines until "baseurl:"
   Hello. This is Seyeong Kim's Tech Blog.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: jekyllrb
-github_username:  jekyll
+url: "seyeong.kim" # the base hostname & protocol for your site, e.g. http://example.com
+github_username:  xtrusia
 
 # Build settings
 remote_theme: pages-themes/leap-day@v0.2.0
