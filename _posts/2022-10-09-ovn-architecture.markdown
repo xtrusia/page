@@ -12,4 +12,47 @@ OVN 배포는 다양한 구성 요소로 이뤄진다.
 * 위에서 정의한 클라우드 관리 시스템
 * OVN/CMS 플러그인 는 OVN에 연결짓기 위한 CMS의 구성요소이다. 플러그인의 주 목적은 CMS의 환경설정 데이터베이스에 CMS 특정 포멧으로 저장된 논리 네트워크 환경설정에 대한 CMS의 개념을 OVN이 이해할 수 있는 중간 표현으로 해석하는 것이다. 이 구성요소는 필수적으로 CMS에 특정되어 있다. 따라서, 새 플로그인은 OVN에 통합된 각 CMS를 위해 개발될 필요가 있다. 아래 다이어그램에 있는 모든 구성요소는 CMS에 독립적이다.
 * OVN Northbound 데이터베이스는 OVN/CMS 플러그인에 의해 전달된passed down 논리 네트워크 환경설정의 중간 표현을 수신한다. 데이터베이스 스키마는 CMS에서 사용된 개념을 impedance matched 구현한다. 따라서, 논리 스위치, 라우터, ACL 등의 개념을 직접 지원한다. 자세한 사항은 ovn-nb(5)을 보라 OVN Northbound 데이터베이스는 클라이언트가 두가지이다. 상단의 OVN/CMS 플러그인과 하단의 ovn-northd이다.
+* ovn-northd(8) 은 상위 OVN Northbound 데이터베이스, 그리고 하위 OVN Southbound 데이터베이스에 접속한다. 이는 논리적 네트워크 환경설정을 기존conventional 네트워크 개념으로 변환한다. 이는 OVN Northbound 데이터베이스에서 취해져서, 하단의 OVN Southbound에 있는 논리 데이터패스datapath 흐름flows으로 변환된다.
+* OVN Southbound 데이터베이스는 시스템의 중심이다. 이 데이터베이스의 클라이언트는 상단의 ovn-northd(8), 하단 모든 전송 노드에 있는 ovn-controller(8)이다. OVN Southbound 데이터베이스는 세 종류의 데이터를 포함한다. 
+  하이퍼바이저 또는 다른 노드에 닿는 방법을 지정하는 물리 네트워크(PN) 테이블, 논리 데이터패스 흐름이라 불리는 논리 네트워크를 서술하는 논리 네트워크(LN), 논리 네트워크 구성요소를 물리 네트워크에 연결짓는 바인딩Binding 테이블이 그것이다. 하이퍼바이저는 PN과 Port_Binding 테이블을 구성하며, ovn-northd(8)은 LN 테이블을 구성한다. 
+  
+  OVN Southbound 데이터베이스 성능은 여러 개의 전송 노드와 함께 규모 조정이 가능해야 한다. 이는 병목현상 때문에 ovsdb-server(1)를 대상으로 한 작업이 필요하다. 사용 가능성을 위한 클러스터링이 필요할 수 있다.
 
+나머지 구성요소는 각 하이퍼바이저마다 존재한다.
+
+* ovn-controller(8)은 각 하이퍼바이저 및 소프트웨어 게이트웨이에 존재하는 OVN의 에이전트agent이다. Northbound는 OVN Southbound 데이터베이스에 접속하여 OVN 환경설정과 그 상태를 학습하고, 하이퍼바이저의 상태를 PN 테이블 및 바인딩 테이블의 섀시Chassis 컬럼을 구성한다. Southbound는 네트워크 트래픽 제어를 위해 OpenFlow 컨트롤러인 ovs-vswitchd(8)에 접속하고, 로컬 ovsdb-server(1)에 접속하여 Open vSwitch 환경설정을 모니터링 및 제어한다.
+
+* ovs-vswitchd(8)와 ovsdb-server(1)은 Open vSwitch의 기존 구성요소이다.
+
+                                         CMS
+                                          |
+                                          |
+                              +-----------|-----------+
+                              |           |           |
+                              |     OVN/CMS Plugin    |
+                              |           |           |
+                              |           |           |
+                              |   OVN Northbound DB   |
+                              |           |           |
+                              |           |           |
+                              |       ovn-northd      |
+                              |           |           |
+                              +-----------|-----------+
+                                          |
+                                          |
+                                +-------------------+
+                                | OVN Southbound DB |
+                                +-------------------+
+                                          |
+                                          |
+                       +------------------+------------------+
+                       |                  |                  |
+         HV 1          |                  |    HV n          |
+       +---------------|---------------+  .  +---------------|---------------+
+       |               |               |  .  |               |               |
+       |        ovn-controller         |  .  |        ovn-controller         |
+       |         |          |          |  .  |         |          |          |
+       |         |          |          |     |         |          |          |
+       |  ovs-vswitchd   ovsdb-server  |     |  ovs-vswitchd   ovsdb-server  |
+       |                               |     |                               |
+       +-------------------------------+     +-------------------------------+
