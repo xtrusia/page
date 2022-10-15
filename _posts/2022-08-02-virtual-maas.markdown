@@ -202,6 +202,6 @@ Then you need to add this host as Chassis on MAAS.
 
 Then this machine needs Commission first.
 
-![Commissioned machine](/assets/images/captuer2.png)
+![Commissioned machine](/assets/images/capture2.png)
 
 TBD
