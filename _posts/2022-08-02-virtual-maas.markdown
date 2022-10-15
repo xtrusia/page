@@ -192,7 +192,7 @@ Preparing xml file for juju controller
 
 Install MAAS
 
-![Install MAAS](https://maas.io/docs/how-to-install-maas)
+[Install MAAS](https://maas.io/docs/how-to-install-maas)
 
 
 Waiting on MAAS image synchronization.
@@ -209,8 +209,8 @@ Then this machine needs Commission first.
 
 Install Juju
 
-![Install Juju](https://juju.is/docs/olm/installing-juju)
-![How to use MAAS with Juju](https://juju.is/docs/olm/maas)
+[Install Juju](https://juju.is/docs/olm/installing-juju)
+[How to use MAAS with Juju](https://juju.is/docs/olm/maas)
 
 When you add credential, there is a part for maas-oauth. then you need to copy below key and paste it to there.
 
