@@ -47,6 +47,7 @@ I usually work for cloud and server area. Sometimes work for easy kernel issue.
 # Translations
 * 렛츠 고! Ext JS 웹 애플리케이션 개발 - 제이펍 2011
 * Xen(젠) 하이퍼바이저 완벽 가이드 2012
+* 리눅스 네트워크의 이해 2016
 * Ceph 마스터하기 2017
 * 욕토 프로젝트로 시작하는 임베디드 리눅스 시스템 2018
 * 임베디드 시스템 아키텍처 2019
