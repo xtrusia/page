@@ -198,6 +198,6 @@ Waiting on MAAS image synchronization.
 
 Then you need to add this host as Chassis on MAAS.
 
-<img src="/assets/images/capture1.png" > 
+<img src="http://seyeong.kim//assets/images/capture1.png" > 
 
 TBD
