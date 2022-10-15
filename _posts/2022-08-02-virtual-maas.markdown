@@ -219,9 +219,29 @@ When you add credential, there is a part for maas-oauth. then you need to copy b
 juju bootstrapping
 
 {% highlight shell %}
-$ juju bootstrap xtrusia
+xtrusia@xtrusia:~$ juju bootstrap xtrusia
+Creating Juju controller "xtrusia-default" on xtrusia/default
+Looking for packaged Juju agent version 2.9.35 for amd64
+Located Juju agent version 2.9.35-ubuntu-amd64 at https://streams.canonical.com/juju/tools/agent/2.9.35/juju-2.9.35-linux-amd64.tgz
+Launching controller instance(s) on xtrusia/default...
+ - qgamxn (arch=amd64 mem=4G cores=2)  
+Installing Juju agent on bootstrap instance
+Fetching Juju Dashboard 0.8.1
+Waiting for address
+Attempting to connect to 10.0.0.254:22
+Connected to 10.0.0.254
+Running machine configuration script...
+Bootstrap agent now started
+Contacting Juju controller at 10.0.0.254 to verify accessibility...
 
+Bootstrap complete, controller "xtrusia-default" is now available
+Controller machines are in the "controller" model
+Initial model "default" added
+
+xtrusia@xtrusia:~$ juju status
+Model    Controller       Cloud/Region     Version  SLA          Timestamp
+default  xtrusia-default  xtrusia/default  2.9.35   unsupported  03:49:55Z
+
+Model "admin/default" is empty.
 
 {% endhighlight %}
-
-TBD
