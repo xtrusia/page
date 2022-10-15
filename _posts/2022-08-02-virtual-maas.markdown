@@ -198,6 +198,6 @@ Waiting on MAAS image synchronization.
 
 Then you need to add this host as Chassis on MAAS.
 
-<img src="http://seyeong.kim//assets/images/capture1.png" > 
+![Addded machine for bootstrapping](/assets/images/capture1.png)
 
 TBD
