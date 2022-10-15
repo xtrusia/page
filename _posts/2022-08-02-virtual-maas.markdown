@@ -19,7 +19,7 @@ sudo apt install qemu-kvm qemu-system-x86 libvirt-daemon-system libvirt-clients 
 Check if nested kvm is working.
 
 {% highlight shell %}
-\$ kvm-ok
+$ kvm-ok
 INFO: /dev/kvm exists
 KVM acceleration can be used
 {% endhighlight %}
@@ -82,6 +82,122 @@ Save below file as maas-private.xml
 </network>
 {% endhighlight %}
 
+Preparing storage for vms
 
+{% highlight shell %}
+// cd anywhere where you want
+$ truncate --size 30G juju-controller
+{% endhighlight %}
+
+Preparing xml file for juju controller
+// some parameters should be adjusted to your env.
+
+{% highlight xml %}
+<domain type='kvm' id='76'>
+  <name>juju-bootstrap</name>
+  <memory unit='KiB'>2097152</memory>
+  <currentMemory unit='KiB'>2097152</currentMemory>
+  <vcpu placement='static'>2</vcpu>
+  <resource>
+    <partition>/machine</partition>
+  </resource>
+  <os>
+    <type arch='x86_64' machine='pc-i440fx-wily'>hvm</type>
+    <boot dev='network'/>
+    <boot dev='hd'/>
+  </os>
+  <features>
+    <acpi/>
+    <apic/>
+  </features>
+  <clock offset='utc'>
+    <timer name='rtc' tickpolicy='catchup'/>
+    <timer name='pit' tickpolicy='delay'/>
+    <timer name='hpet' present='no'/>
+  </clock>
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>restart</on_crash>
+  <pm>
+    <suspend-to-mem enabled='no'/>
+    <suspend-to-disk enabled='no'/>
+  </pm>
+  <devices>
+    <emulator>/usr/bin/kvm-spice</emulator>
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='raw' cache='none'/>
+      <source file='/home/xtrusia/juju-bootstrap'/>
+      <backingStore/>
+      <target dev='vda' bus='virtio'/>
+      <alias name='virtio-disk0'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x05' function='0x0'/>
+    </disk>
+    <controller type='usb' index='0' model='ich9-ehci1'>
+      <alias name='usb'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x7'/>
+    </controller>
+    <controller type='pci' index='0' model='pci-root'>
+      <alias name='pci.0'/>
+    </controller>
+    <interface type='network'>
+      <mac address='52:54:00:97:24:01'/>
+      <source network='maas-mgmt' bridge='virbr1'/>
+      <target dev='vnet12'/>
+      <model type='virtio'/>
+      <alias name='net0'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x04' function='0x0' multifunction='on'/>
+    </interface>
+    <interface type='network'>
+      <mac address='52:54:01:97:24:01'/>
+      <source network='maas-private' bridge='virbr2'/>
+      <target dev='vnet13'/>
+      <model type='virtio'/>
+      <alias name='net1'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x04' function='0x1'/>
+    </interface>
+    <serial type='pty'>
+      <source path='/dev/pts/14'/>
+      <target type='isa-serial' port='0'>
+        <model name='isa-serial'/>
+      </target>
+      <alias name='serial0'/>
+    </serial>
+    <console type='pty' tty='/dev/pts/14'>
+      <source path='/dev/pts/14'/>
+      <target type='serial' port='0'/>
+      <alias name='serial0'/>
+    </console>
+    <input type='mouse' bus='ps2'>
+      <alias name='input0'/>
+          </input>
+    <input type='keyboard' bus='ps2'>
+      <alias name='input1'/>
+    </input>
+    <graphics type='vnc' port='5906' autoport='yes' listen='0.0.0.0'>
+      <listen type='address' address='0.0.0.0'/>
+    </graphics>
+    <video>
+      <model type='cirrus' vram='16384' heads='1' primary='yes'/>
+      <alias name='video0'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x02' function='0x0'/>
+    </video>
+    <memballoon model='virtio'>
+      <alias name='balloon0'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x08' function='0x0'/>
+    </memballoon>
+  </devices>
+</domain>
+{% endhighlight %}
+
+Install MAAS
+
+https://maas.io/docs/how-to-install-maas
+
+
+Waiting on MAAS image synchronization.
+
+Then you need to add this host as Chassis on MAAS.
+
+<img src="/assets/images/capture1.png" > 
 
 TBD
