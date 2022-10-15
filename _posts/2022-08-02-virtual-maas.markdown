@@ -200,4 +200,8 @@ Then you need to add this host as Chassis on MAAS.
 
 ![Addded machine for bootstrapping](/assets/images/capture1.png)
 
+Then this machine needs Commission first.
+
+![Commissioned machine](/assets/images/captuer2.png)
+
 TBD
