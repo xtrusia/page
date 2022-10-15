@@ -92,11 +92,12 @@ $ truncate --size 30G juju-controller
 Preparing xml file for juju controller
 // some parameters should be adjusted to your env.
 
+// juju controller needs at least 3584.0MB for memory
 {% highlight xml %}
 <domain type='kvm' id='76'>
   <name>juju-bootstrap</name>
-  <memory unit='KiB'>2097152</memory>
-  <currentMemory unit='KiB'>2097152</currentMemory>
+  <memory unit='KiB'>4194304</memory>
+  <currentMemory unit='KiB'>4194304</currentMemory>
   <vcpu placement='static'>2</vcpu>
   <resource>
     <partition>/machine</partition>
@@ -191,7 +192,7 @@ Preparing xml file for juju controller
 
 Install MAAS
 
-https://maas.io/docs/how-to-install-maas
+![Install MAAS](https://maas.io/docs/how-to-install-maas)
 
 
 Waiting on MAAS image synchronization.
@@ -200,8 +201,27 @@ Then you need to add this host as Chassis on MAAS.
 
 ![Addded machine for bootstrapping](/assets/images/capture1.png)
 
+You also need to set DHCP for network subnet. Otherwise, you can't let machine boot by PXE
+
 Then this machine needs Commission first.
 
 ![Commissioned machine](/assets/images/capture2.png)
+
+Install Juju
+
+![Install Juju](https://juju.is/docs/olm/installing-juju)
+![How to use MAAS with Juju](https://juju.is/docs/olm/maas)
+
+When you add credential, there is a part for maas-oauth. then you need to copy below key and paste it to there.
+
+![Commissioned machine](/assets/images/capture2.png)
+
+juju bootstrapping
+
+{% highlight shell %}
+$ juju bootstrap xtrusia
+
+
+{% endhighlight %}
 
 TBD
