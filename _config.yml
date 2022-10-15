@@ -18,7 +18,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Anything logs
+title: Seyeong Kim
 email: seyeong.kim@canonical.com
 description: >- # this means to ignore newlines until "baseurl:"
   Nothing Special
@@ -27,7 +27,7 @@ url: "http://seyeong.kim" # the base hostname & protocol for your site, e.g. htt
 github_username:  xtrusia
 
 # Build settings
-theme: minima
+theme: just-the-docs
 plugins:
   - jekyll-feed
 

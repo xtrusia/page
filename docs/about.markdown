@@ -2,6 +2,7 @@
 layout: page
 title: About
 permalink: /about/
+nav_order: 0
 ---
 
 I'm Seyeong Kim Sustaining Engineer.
@@ -15,7 +16,7 @@ I usually work for cloud and server area. Sometimes work for easy kernel issue.
 * 2011 - 2012: Software Enginneer, AHEMS cloud startup 
 * 2001 - 2010: Software Engineering, Mechanical Engineering. Sungkyunkwan University.
 
-# Upstream Work
+# Upstream Works
 
 ## Libre office
 * https://gerrit.libreoffice.org/c/core/+/11829/
@@ -39,7 +40,7 @@ I usually work for cloud and server area. Sometimes work for easy kernel issue.
 
 * 가상 스토리지 이미지 경량화 시스템 및 가상 스토리지 이미지 경량화 시스템의 입출력 방법 및 가상 스토리지 이미지 생성 방법 KR 10-2012-0045571
 
-# Language
+# Languages
 
 * Korean ( native )
 * English ( intermediate )
