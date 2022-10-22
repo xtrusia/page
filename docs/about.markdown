@@ -5,6 +5,8 @@ permalink: /about/
 nav_order: 0
 ---
 
+Email: one@seyeong.kim
+
 I'm Seyeong Kim Sustaining Engineer.
 
 I started Linux officially in 2001 with debian distribution, before that time, I just was an user on debian as a student, After joining university, I used Linux as project base operating system and my home desktop. After graduated, I developed cloud service based on Linux server and client several years in my own company before canonical.
