@@ -129,3 +129,40 @@ OVN에서의 논리 네트워크 개념은 다음을 포함한다.
     * 논리 스위치와 VIF간의 지역 연결 지점을 표현하는 Localport 포트. 이 포트는 모든 섀시(특정 부분에 속하지 않는.)에 존재하며, 여기서 나오는 트래픽은 터널을 통하지 않는다. localport는 지역을 대상으로 하는 트래픽만 생성할 것으로 기대한다. 보통 수신하는 요청에 반응하는 경우 말이다. 한 예로, OpenStack Neutron 이 localport를 사용하여 모든 하이퍼바이저에 상주하는 VM에게 메타데이터를 제공하는데 사용한다. 메타데이터 프록시 프로세스는 이 모든 호스트에 있는 포트에 연결된다. 같은 네트워크에 있는 모든 VM은 같은 IP/MAC 주소를 사용하여 터널을 통과하지 않고도 도달이 가능하다. 더 자세한 정보는 다음을 확인하라. https://docs.openstack.org/developer/networking-ovn/design/metadata_api.html.
 
 # VIF의 생에 주기
+독립되어 표현된 테이블(Table)과 그 스키마는 이해하기가 어렵다. 아래는 그 예이다.
+
+하이퍼바이저의 VIF는 하이퍼바이저에서 직접 구동중인 VM 또는 컨테이너에 연결된 가상 네트워크 인터페이스이다(이는 VM 내에서 구동되는 컨테이너의 인터페이스와는 다르다.).
+
+이 예제의 단계는 OVN과 OVN Northbound 데이터베이스 스키마의 상세를 참조한다. 이 데이터베이스의 전체 내용은 ovn-sb(5)와 ovn-nb(5)를 각각 살펴보라.
+
+1. VIF의 생애 주기는 CMS 관리자가 CMS 사용자 인터페이스나 API를 이용해서 새 VIF를 생성하고, 이를 스위치(OVN를 통해 논리 스위치로 구현된 것.)에 추가할 떄 시작된다. CMS는 그 고유의 환경설정을 갱신한다. 여기에는 해당 VIF와 관련된 고유의, 영구적인 식별자 vif-id와 이더넷 주소 mac이 포함된다.
+
+2. CMS 플러그인은 새 VIF를 포함시키기 위해 Logical_Switch_Port 테이블에 행을 추가함으로써 OVN Northbound 데이터베이스를 갱신한다. 새 행에는, name은 vif-id를, mac은 mac을 뜻하며, switch는 OVN 논리 스위치의 Logical_Switch 레코드를 가리킨다. 또한 다른 열들도 적절히 초기화된다.
+
+3. ovn-northd는 OVN Northbound 데이터베이스 갱신을 수신한다. 이제 대응되는 갱신을 OVN Southbound 데이터베이스에 수행한다. 새 포트를 반영하기 위해 OVN Southbound 데이터베이스 Logical_Flow 테이블을 추가함으로써 말이다. 예를 들어, 새 포트의 MAC 주소로 향하는 패킷을 인지하기 위핸 플로우(flow) 추가 및 새 포트를 포함하는 브로드캐스트 및 멀티캐스트 패킷을 전달하기 위한 플로우 갱신이 그것이다. 또한 Binding 테이블의 레코드를 생성하고, chassis를 식별하는 열을 제외한 모든 열을 populate한다.
+
+4. 모든 하이퍼바이저에서, ovn-controller는 이전 단계에서 ovn-northd가 수행한 Logical_Flow 테이블의 갱신을 수신한다. 해당 VIF를 소유하는 VM이 전원이 꺼져 있는 한, ovn-controller는 많은 일을 수행할 수 없다. 예를 들어, VIF가 실제로는 어디에도 존재하지 않기 떄문에, 해당 VIF에서 패킷을 보내거나 수신하는 것을 할당할 수 없다.
+
+5. 언젠가 사용자는 해당 VIF를 갖는 VM의 전원을 켤 것이다. 켜진 VM이 존재하는 하이퍼바이저에서, 하이퍼바이저와 Open vSwitch(IntegrationGuide.rst에 서술됨) 사이의 통합은 해당 VIF를 OVN 통합 브릿지에 추가하고, 해당 인터페이스가 새 VIF의 인스턴스화라는 것을 가리키기 위해 vif-id를 external_ids:iface-id에 저장한다(이 코드는 OVN에서 새로 구현된 것이 아니다. 이는 OVS를 지원하는 하이퍼바이저가 이미 수행하고 있는 통합 작업이다.).
+
+6. 켜진 VM이 있는 하이퍼바이저에서, ovn-controller는 새 인터페이스의 external_ids:iface-id를 인지한다. OVN Southbound DB에서, 이는 external_ids:iface-id로부터의 논리 포트를 하이퍼바이저에 연결하는 열인 Binding 테이블의 chassis 열을 갱신한다. 그 후, ovn-controller는 지역 하이퍼바이저의 OpenFlow 테이블을 갱신하여 해당 VIF를 출입하는 패킷을 적절히 처리하게 한다.
+
+7. OpenStack을 포함하는 몇몇 CMS 시스템에서는 네트워크가 완전히 준비된 경우에만 VM을 구동한다. 이를 지원하기 위해, ovn-northd는 Binding 테이블에 있는 열을 위해 갱신된 chassis 열을 인지하고, 해당 VIF가 이제 사용 가능하다는 것을 가리키기 위해 OVN Northbound 데이터베이스의 Logical_Switch_Port 테이블의 up 열을 갱신하도록 한다. 이 기능을 사용하는 CMS는 VM의 실행을 허용한다.
+
+8. VIF가 상주하고 있지 않은 모든 하이퍼바이저에서, ovn-controller는 Binding 테이블에 poulated된 열을 인지한다. 이는 ovn-controller에 논리 포트의 물리 위치를 제공한다. 따라서, 각 인스턴스는 그 스위치(OVN DB Logical_Flow 테이블의 논리 데이터패스 흐름을 기반으로)의 OpenFlow 테이블을 갱신하여 해당 VIF에 출입하는 패킷은 터널을 통해 적절히 처리된다.
+
+9. 끝으로, 해당 VIF를 갖는 VM의 전원을 끊을 것이다. 꺼진 VM이 있는 하이퍼바이저에서, VIF는 OVN 통합 브릿지에서 삭제된다.
+
+10. 전원이 꺼진 VM을 갖는 하이퍼바이저에서, ovn-controller는 VIF가 삭제되었음을 인지한다. 따라서, Binding 테이블의 논리 포트를 나타내는 Chassis 열의 내용을 삭제한다.
+
+11. 모든 하이퍼바이저에서, ovn-controller는 Binding 테이블의 논리 포트를 위한 행에서 빈 Chassis 열을 인지한다. 이는 ovn-controller가 더 이상 해당 논리 포트의 물리적 위치를 알지 못한다는 것이다. 따라서, 각 인스턴스는 이를 반영하기 위해 그 OpenFlow 테이블을 갱신한다.
+
+12. 결국 VIF(또는 그 VM전체)가 더 이상 누구에게도 필요하지 않은 경우, 관리자는 CMS 사용자 인터페이스 또는 API를 사용해서 VIF를 삭제한다. CMS는 그 환경설정을 갱신한다.
+
+13. CMS 플러그인은 OVN Northbound 데이터베이스에서 VIF를 삭제한다. Logical_Switch_Port 테이블의 열을 삭제함으로써 말이다.
+
+14. ovn-northd는 OVN Northbound 갱신을 수신하고, OVN Southbound 데이터베이스를 그에 맞게 갱신한다. OVN Southbound 데이터베이스에서 삭제된 VIF와 관련된 Logical_Flow 테이블과 Binding 테이블에서 열을 삭제 또는 갱신한다.
+
+15. 모든 하이퍼바이저에서, ovn-controller는 이전 단계에서 ovn-northd가 수행한 Logical_Flow 테이블의 갱신을 수신한다. ovn-controller는 해당 갱신을 반영하기 위해 OpenFlow 테이블을 갱신한다. 할 수 있는게 많진 않지만, 이전 단계에서 Binding 테이블로부터 삭제가 되었을 때 이미 해당 VIF는 도달할 수 없게 되었을 것이다.
+
+# VM 내의 컨테이너 인터페이스의 생애 주기
