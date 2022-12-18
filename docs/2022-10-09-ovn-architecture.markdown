@@ -28,13 +28,13 @@ OVN 배포는 다양한 구성 요소로 이뤄진다.
 * OVN Southbound 데이터베이스는 시스템의 중심이다. 이 데이터베이스의 클라이언트는 상단의 [ovn-northd(8)](https://man7.org/linux/man-pages/man8/ovn-northd.8.html){:target="_blank"}, 하단 모든 전송 노드에 있는 ovn-controller(8)이다. OVN Southbound 데이터베이스는 세 종류의 데이터를 포함한다. 
   하이퍼바이저 또는 다른 노드에 닿는 방법을 지정하는 물리 네트워크(PN) 테이블, 논리 데이터패스 플로우라 불리는 논리 네트워크를 서술하는 논리 네트워크(LN), 논리 네트워크 구성요소를 물리 네트워크에 연결짓는 바인딩Binding 테이블이 그것이다. 하이퍼바이저는 PN과 Port_Binding 테이블을 구성하며, [ovn-northd(8)](https://man7.org/linux/man-pages/man8/ovn-northd.8.html){:target="_blank"}은 LN 테이블을 구성한다. 
   
-  OVN Southbound 데이터베이스 성능은 여러 개의 전송 노드와 함께 규모 조정이 가능해야 한다. 이는 병목현상 때문에 ovsdb-server(1)를 대상으로 한 작업이 필요하다. 사용 가능성을 위한 클러스터링이 필요할 수 있다.
+  OVN Southbound 데이터베이스 성능은 여러 개의 전송 노드와 함께 규모 조정이 가능해야 한다. 이는 병목현상 때문에 [ovsdb-server(1)](https://man7.org/linux/man-pages/man1/ovsdb-server.1.html){:target="_blank"}를 대상으로 한 작업이 필요하다. 사용 가능성을 위한 클러스터링이 필요할 수 있다.
 
 나머지 구성요소는 각 하이퍼바이저마다 존재한다.
 
-* ovn-controller(8)은 각 하이퍼바이저 및 소프트웨어 게이트웨이에 존재하는 OVN의 에이전트agent이다. Northbound는 OVN Southbound 데이터베이스에 접속하여 OVN 환경설정과 그 상태를 학습하고, 하이퍼바이저의 상태를 PN 테이블 및 바인딩 테이블의 섀시Chassis 컬럼을 구성한다. Southbound는 네트워크 트래픽 제어를 위해 OpenFlow 컨트롤러인 ovs-vswitchd(8)에 접속하고, 로컬 ovsdb-server(1)에 접속하여 Open vSwitch 환경설정을 모니터링 및 제어한다.
+* [ovn-controller(8)](https://man7.org/linux/man-pages/man8/ovn-controller.8.html){:target="_blank"}은 각 하이퍼바이저 및 소프트웨어 게이트웨이에 존재하는 OVN의 에이전트agent이다. Northbound는 OVN Southbound 데이터베이스에 접속하여 OVN 환경설정과 그 상태를 학습하고, 하이퍼바이저의 상태를 PN 테이블 및 바인딩 테이블의 섀시Chassis 컬럼을 구성한다. Southbound는 네트워크 트래픽 제어를 위해 OpenFlow 컨트롤러인 [ovs-vswitchd(8)](http://www.openvswitch.org/support/dist-docs/ovs-vswitchd.8.txt){:target="_blank"}에 접속하고, 로컬 [ovsdb-server(1)](https://man7.org/linux/man-pages/man1/ovsdb-server.1.html){:target="_blank"}에 접속하여 Open vSwitch 환경설정을 모니터링 및 제어한다.
 
-* ovs-vswitchd(8)와 ovsdb-server(1)은 Open vSwitch의 기존 구성요소이다.
+* [ovs-vswitchd(8)](http://www.openvswitch.org/support/dist-docs/ovs-vswitchd.8.txt){:target="_blank"}와 [ovsdb-server(1)](https://man7.org/linux/man-pages/man1/ovsdb-server.1.html){:target="_blank"}은 Open vSwitch의 기존 구성요소이다.
 
                                          CMS
                                           |
