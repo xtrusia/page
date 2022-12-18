@@ -25,14 +25,14 @@ OVN 배포는 다양한 구성 요소로 이뤄진다.
 * OVN/CMS 플러그인 는 OVN에 연결짓기 위한 CMS의 구성요소이다. 플러그인의 주 목적은 CMS의 환경설정 데이터베이스에 CMS 특정 포멧으로 저장된 논리 네트워크 환경설정에 대한 CMS의 개념을 OVN이 이해할 수 있는 중간 표현으로 해석하는 것이다. 이 구성요소는 필수적으로 CMS에 특정되어 있다. 따라서, 새 플로그인은 OVN에 통합된 각 CMS를 위해 개발될 필요가 있다. 아래 다이어그램에 있는 모든 구성요소는 CMS에 독립적이다.
 * OVN Northbound 데이터베이스는 OVN/CMS 플러그인에 의해 전달된passed down 논리 네트워크 환경설정의 중간 표현을 수신한다. 데이터베이스 스키마는 CMS에서 사용된 개념을 impedance matched 구현한다. 따라서, 논리 스위치, 라우터, ACL 등의 개념을 직접 지원한다. 자세한 사항은 [ovn-nb(5)](https://man7.org/linux/man-pages/man5/ovn-nb.5.html){:target="_blank"}을 보라 OVN Northbound 데이터베이스는 클라이언트가 두가지이다. 상단의 OVN/CMS 플러그인과 하단의 ovn-northd이다.
 * [ovn-northd(8)](https://man7.org/linux/man-pages/man8/ovn-northd.8.html){:target="_blank"} 은 상위 OVN Northbound 데이터베이스, 그리고 하위 OVN Southbound 데이터베이스에 접속한다. 이는 논리적 네트워크 환경설정을 기존conventional 네트워크 개념으로 변환한다. 이는 OVN Northbound 데이터베이스에서 취해져서, 하단의 OVN Southbound에 있는 논리 데이터패스datapath 플로우flows으로 변환된다.
-* OVN Southbound 데이터베이스는 시스템의 중심이다. 이 데이터베이스의 클라이언트는 상단의 [ovn-northd(8)](https://man7.org/linux/man-pages/man8/ovn-northd.8.html){:target="_blank"}, 하단 모든 전송 노드에 있는 ovn-controller(8)이다. OVN Southbound 데이터베이스는 세 종류의 데이터를 포함한다. 
+* OVN Southbound 데이터베이스는 시스템의 중심이다. 이 데이터베이스의 클라이언트는 상단의 [ovn-northd(8)](https://man7.org/linux/man-pages/man8/ovn-northd.8.html){:target="_blank"}, 하단 모든 전송 노드에 있는 [ovn-controller(8)](https://man7.org/linux/man-pages/man8/ovn-controller.8.html){:target="_blank"}이다. OVN Southbound 데이터베이스는 세 종류의 데이터를 포함한다. 
   하이퍼바이저 또는 다른 노드에 닿는 방법을 지정하는 물리 네트워크(PN) 테이블, 논리 데이터패스 플로우라 불리는 논리 네트워크를 서술하는 논리 네트워크(LN), 논리 네트워크 구성요소를 물리 네트워크에 연결짓는 바인딩Binding 테이블이 그것이다. 하이퍼바이저는 PN과 Port_Binding 테이블을 구성하며, [ovn-northd(8)](https://man7.org/linux/man-pages/man8/ovn-northd.8.html){:target="_blank"}은 LN 테이블을 구성한다. 
   
   OVN Southbound 데이터베이스 성능은 여러 개의 전송 노드와 함께 규모 조정이 가능해야 한다. 이는 병목현상 때문에 [ovsdb-server(1)](https://man7.org/linux/man-pages/man1/ovsdb-server.1.html){:target="_blank"}를 대상으로 한 작업이 필요하다. 사용 가능성을 위한 클러스터링이 필요할 수 있다.
 
 나머지 구성요소는 각 하이퍼바이저마다 존재한다.
 
-* [ovn-controller(8)](https://man7.org/linux/man-pages/man8/ovn-controller.8.html){:target="_blank"}은 각 하이퍼바이저 및 소프트웨어 게이트웨이에 존재하는 OVN의 에이전트agent이다. Northbound는 OVN Southbound 데이터베이스에 접속하여 OVN 환경설정과 그 상태를 학습하고, 하이퍼바이저의 상태를 PN 테이블 및 바인딩 테이블의 섀시Chassis 컬럼을 구성한다. Southbound는 네트워크 트래픽 제어를 위해 OpenFlow 컨트롤러인 [ovs-vswitchd(8)](http://www.openvswitch.org/support/dist-docs/ovs-vswitchd.8.txt){:target="_blank"}에 접속하고, 로컬 [ovsdb-server(1)](https://man7.org/linux/man-pages/man1/ovsdb-server.1.html){:target="_blank"}에 접속하여 Open vSwitch 환경설정을 모니터링 및 제어한다.
+* [ovn-controller(8)](https://man7.org/linux/man-pages/man8/ovn-controller.8.html){:target="_blank"}은 각 하이퍼바이저 및 소프트웨어 게이트웨이에 존재하는 OVN의 에이전트agent이다. Northbound는 OVN Southbound 데이터베이스에 접속하여 OVN 환경설정과 그 상태를 학습하고, 하이퍼바이저의 상태를 PN 테이블 및 바인딩 테이블의 섀시Chassis 열을 구성한다. Southbound는 네트워크 트래픽 제어를 위해 OpenFlow 컨트롤러인 [ovs-vswitchd(8)](http://www.openvswitch.org/support/dist-docs/ovs-vswitchd.8.txt){:target="_blank"}에 접속하고, 로컬 [ovsdb-server(1)](https://man7.org/linux/man-pages/man1/ovsdb-server.1.html){:target="_blank"}에 접속하여 Open vSwitch 환경설정을 모니터링 및 제어한다.
 
 * [ovs-vswitchd(8)](http://www.openvswitch.org/support/dist-docs/ovs-vswitchd.8.txt){:target="_blank"}와 [ovsdb-server(1)](https://man7.org/linux/man-pages/man1/ovsdb-server.1.html){:target="_blank"}은 Open vSwitch의 기존 구성요소이다.
 
@@ -73,11 +73,11 @@ OVN 배포는 다양한 구성 요소로 이뤄진다.
 
 OVN 흐름에서의 환경설정 데이터는 north에서 south로 흐른다. CMS는 그 OVN/CMS 플러그인과 northbound 데이터베이스를 통해 논리 네트워크 환경설정을 ovn-northd로 전달한다. 결국, ovn-northd는 환경설정을 저수준 형태로 변환하고, 이를 southbound 데이터베이스를 통해 모든 섀시로 전달한다.
 
-OVN 흐름에서의 상태 정보는 south에서 north로 흐른다. OVN은 현재 몇 가지의 상태 정보만을 제공한다. 먼저, ovn-northd는 northbound Logical_Switch_Port 테이블의 up 컬럼을 구성한다. 만약 southbound Port_Binding 테이블에 논리 포트의 chassis 컬럼이 비어있다면, up을 true로 설정한다. 그렇지 않으면 false로 설정한다. 이는 CMS가 VM의 네트워킹이 시작되었을 때 이를 탐지할 수 있도록 한다.
+OVN 흐름에서의 상태 정보는 south에서 north로 흐른다. OVN은 현재 몇 가지의 상태 정보만을 제공한다. 먼저, ovn-northd는 northbound Logical_Switch_Port 테이블의 up 열을 구성한다. 만약 southbound Port_Binding 테이블에 논리 포트의 chassis 열이 비어있다면, up을 true로 설정한다. 그렇지 않으면 false로 설정한다. 이는 CMS가 VM의 네트워킹이 시작되었을 때 이를 탐지할 수 있도록 한다.
 
 둘째로, OVN은 그 환경설정이 실현되었음을 CMS에 피드백한다. 즉, CMS가 제공한 환경설정이 효과를 발생할 때 마다 피드백한다. 이 기능은 CMS가 순차 번호 프로토콜sequence number protocol에 참여해야 한다. 이는 다음과 같이 동작한다.
 
-1. CMS가 northbound 데이터베이스에 환경설정을 갱신하면, 같은 트랜잭션의 일부로써, NB_Global 테이블의 nb_cfg 컬럼의 값을 늘린다. (이는 CMS가 환경설정이 언제 실현되었는지 알기 원할 때에만 필요하다.)
+1. CMS가 northbound 데이터베이스에 환경설정을 갱신하면, 같은 트랜잭션의 일부로써, NB_Global 테이블의 nb_cfg 열의 값을 늘린다. (이는 CMS가 환경설정이 언제 실현되었는지 알기 원할 때에만 필요하다.)
 
 2. ovn-northd가 northbound 데이터베이스의 주어진 스냅샷snapshot에 따라 southbound 데이터베이스를 갱신하면, 같은 트랜잭션의 일부로써 northbound NB_Global의 nb_cfg를 복사하여 southbound 데이버테이스의 SB_Global 테이블로 복사한다. (따라서, 두 데이터베이스의 옵저버 모니터링은 southbound 데이터베이스와 northbound가 서로 정보를 주고받은 시점을 알 수 있다.)
 
@@ -85,7 +85,7 @@ OVN 흐름에서의 상태 정보는 south에서 north로 흐른다. OVN은 현�
 
 4. 각 섀시의 ovn-controller 프로세스는 갱신된 nb_cfg를 포함한 갱신된 southbound 데이터베이스를 수신한다. 이 프로세스는 결국 섀시의 Open vSwitch 인스턴스에 설치된 물리 플로우flow를 갱신한다. Open vSwitch로부터 물리 플로우이 갱신되었다는 확답을 수신하면, southbound 데이터베이스의 고유(its own) Chassis 레코드를 갱신한다.
 
-5. ovn-northd는 southbound 데이터베이스에 있는 모든 Chassis 레코드의 nb_cfg 컬럼을 모니터링한다. 이들 모든 레코드의 최소값을 계속 추적하며, 이를 northbound NB_Global 테이블의 hv_cfg 컬럼에 복제한다. (따라서, CMS 또는 기타 옵저버는 언제 모든 하이퍼바이저가 northbound 환경설정을 가지는 지 알 수 있다.)
+5. ovn-northd는 southbound 데이터베이스에 있는 모든 Chassis 레코드의 nb_cfg 열을 모니터링한다. 이들 모든 레코드의 최소값을 계속 추적하며, 이를 northbound NB_Global 테이블의 hv_cfg 열에 복제한다. (따라서, CMS 또는 기타 옵저버는 언제 모든 하이퍼바이저가 northbound 환경설정을 가지는 지 알 수 있다.)
 
 # 섀시 설정
 OVN 배포에서의 각 섀시는 OVN에만 할당된 Open vSwitch 브릿지로 설정되어야 한다. 이는 통합 브릿지(integration bridge)라 불린다. 시스템 시작 스크립트는 ovn-controller를 구동 하기 전에 이 브릿지를 생성한다. 만약 이 브릿지가 ovn-controller 시작 시에 존재하지 않으면, 아래에 제안된 기본 환경설정을 가지고 자동으로 생성될 것이다. 통합 브릿지의 포트는 다음을 포함한다.
