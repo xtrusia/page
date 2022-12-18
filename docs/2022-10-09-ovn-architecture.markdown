@@ -16,17 +16,17 @@ OVN 배포는 다양한 구성 요소로 이뤄진다.
 
 * 클라우드 관리 시스템(CMS, Cloud Management System)은 OVN의 말단 클라이언트(사용자 및 관리자를 통한)이다. OVN 통합integration은 CMS특정 플러그인과 관련 소프트웨어(아래 확인)의 설치를 요구한다. OVN은 처음에는 오픈스택OpenStack을 CMS로 잡았다. 일반적으로 하나의 CMS를 상정하지만, 서로 다른 OVN 배포 부분을 관리하는 다중 CMS 환경도 생각해 볼 수 있다.
 물리 또는 가상 노드에 설치된 OVN 데이터베이스는 중심에 위치한다.
-* 하나 이상의(또는 많은 수) 하이퍼바이저. 하이퍼바이저는 Open vSwitch를 구동해야 하며, OVS 소스 트리의 [IntegrationGuide.rst](https://github.com/openvswitch/ovs/blob/master/Documentation/topics/integration.rst)에 서술된 인터페이스를 구현한다. Open vSwitch가 지원하는 하이퍼바이저 플랫폼은 어떤 것이든 사용 가능하다.
+* 하나 이상의(또는 많은 수) 하이퍼바이저. 하이퍼바이저는 Open vSwitch를 구동해야 하며, OVS 소스 트리의 [IntegrationGuide.rst](https://github.com/openvswitch/ovs/blob/master/Documentation/topics/integration.rst){:target="_blank"}에 서술된 인터페이스를 구현한다. Open vSwitch가 지원하는 하이퍼바이저 플랫폼은 어떤 것이든 사용 가능하다.
 * 0개 이상의 게이트웨이. 게이트웨이는 터널과 물리 이더넷 포트 간 패킷 상호 포워딩을 통해 터널 기반 논리 네트워크를 물리 네트워크로 확장한다. 이는 비 가상화된 머신을 논리 네트워크에 참여할 수 있도록 한다. 게이트웨이는 물리 호스트, 가상 머신, 또는 vtep(5)기술을 지원하는 ASIC 기반 하드웨어 스위치여야 한다. 하이퍼바이저와 게이트웨이는 모두 전송 노드transport node 또는 섀시chassis라 불린다.
 
 아래의 다이어그램은 OVN의 주 구성요소 및 관련 소프트웨어의 상호작용interact를 보여준다. 다이어그램의 최상단부터 보면, 다음과 같다.
 
 * 위에서 정의한 클라우드 관리 시스템
 * OVN/CMS 플러그인 는 OVN에 연결짓기 위한 CMS의 구성요소이다. 플러그인의 주 목적은 CMS의 환경설정 데이터베이스에 CMS 특정 포멧으로 저장된 논리 네트워크 환경설정에 대한 CMS의 개념을 OVN이 이해할 수 있는 중간 표현으로 해석하는 것이다. 이 구성요소는 필수적으로 CMS에 특정되어 있다. 따라서, 새 플로그인은 OVN에 통합된 각 CMS를 위해 개발될 필요가 있다. 아래 다이어그램에 있는 모든 구성요소는 CMS에 독립적이다.
-* OVN Northbound 데이터베이스는 OVN/CMS 플러그인에 의해 전달된passed down 논리 네트워크 환경설정의 중간 표현을 수신한다. 데이터베이스 스키마는 CMS에서 사용된 개념을 impedance matched 구현한다. 따라서, 논리 스위치, 라우터, ACL 등의 개념을 직접 지원한다. 자세한 사항은 [ovn-nb(5)](https://man7.org/linux/man-pages/man5/ovn-nb.5.html)을 보라 OVN Northbound 데이터베이스는 클라이언트가 두가지이다. 상단의 OVN/CMS 플러그인과 하단의 ovn-northd이다.
-* [ovn-northd(8)](https://man7.org/linux/man-pages/man8/ovn-northd.8.html) 은 상위 OVN Northbound 데이터베이스, 그리고 하위 OVN Southbound 데이터베이스에 접속한다. 이는 논리적 네트워크 환경설정을 기존conventional 네트워크 개념으로 변환한다. 이는 OVN Northbound 데이터베이스에서 취해져서, 하단의 OVN Southbound에 있는 논리 데이터패스datapath 플로우flows으로 변환된다.
-* OVN Southbound 데이터베이스는 시스템의 중심이다. 이 데이터베이스의 클라이언트는 상단의 [ovn-northd(8)](https://man7.org/linux/man-pages/man8/ovn-northd.8.html), 하단 모든 전송 노드에 있는 ovn-controller(8)이다. OVN Southbound 데이터베이스는 세 종류의 데이터를 포함한다. 
-  하이퍼바이저 또는 다른 노드에 닿는 방법을 지정하는 물리 네트워크(PN) 테이블, 논리 데이터패스 플로우라 불리는 논리 네트워크를 서술하는 논리 네트워크(LN), 논리 네트워크 구성요소를 물리 네트워크에 연결짓는 바인딩Binding 테이블이 그것이다. 하이퍼바이저는 PN과 Port_Binding 테이블을 구성하며, [ovn-northd(8)](https://man7.org/linux/man-pages/man8/ovn-northd.8.html)은 LN 테이블을 구성한다. 
+* OVN Northbound 데이터베이스는 OVN/CMS 플러그인에 의해 전달된passed down 논리 네트워크 환경설정의 중간 표현을 수신한다. 데이터베이스 스키마는 CMS에서 사용된 개념을 impedance matched 구현한다. 따라서, 논리 스위치, 라우터, ACL 등의 개념을 직접 지원한다. 자세한 사항은 [ovn-nb(5)](https://man7.org/linux/man-pages/man5/ovn-nb.5.html){:target="_blank"}을 보라 OVN Northbound 데이터베이스는 클라이언트가 두가지이다. 상단의 OVN/CMS 플러그인과 하단의 ovn-northd이다.
+* [ovn-northd(8)](https://man7.org/linux/man-pages/man8/ovn-northd.8.html){:target="_blank"} 은 상위 OVN Northbound 데이터베이스, 그리고 하위 OVN Southbound 데이터베이스에 접속한다. 이는 논리적 네트워크 환경설정을 기존conventional 네트워크 개념으로 변환한다. 이는 OVN Northbound 데이터베이스에서 취해져서, 하단의 OVN Southbound에 있는 논리 데이터패스datapath 플로우flows으로 변환된다.
+* OVN Southbound 데이터베이스는 시스템의 중심이다. 이 데이터베이스의 클라이언트는 상단의 [ovn-northd(8)](https://man7.org/linux/man-pages/man8/ovn-northd.8.html){:target="_blank"}, 하단 모든 전송 노드에 있는 ovn-controller(8)이다. OVN Southbound 데이터베이스는 세 종류의 데이터를 포함한다. 
+  하이퍼바이저 또는 다른 노드에 닿는 방법을 지정하는 물리 네트워크(PN) 테이블, 논리 데이터패스 플로우라 불리는 논리 네트워크를 서술하는 논리 네트워크(LN), 논리 네트워크 구성요소를 물리 네트워크에 연결짓는 바인딩Binding 테이블이 그것이다. 하이퍼바이저는 PN과 Port_Binding 테이블을 구성하며, [ovn-northd(8)](https://man7.org/linux/man-pages/man8/ovn-northd.8.html){:target="_blank"}은 LN 테이블을 구성한다. 
   
   OVN Southbound 데이터베이스 성능은 여러 개의 전송 노드와 함께 규모 조정이 가능해야 한다. 이는 병목현상 때문에 ovsdb-server(1)를 대상으로 한 작업이 필요하다. 사용 가능성을 위한 클러스터링이 필요할 수 있다.
 
