@@ -73,19 +73,19 @@ OVN 배포는 다양한 구성 요소로 이뤄진다.
 
 OVN 흐름에서의 환경설정 데이터는 north에서 south로 흐른다. CMS는 그 OVN/CMS 플러그인과 northbound 데이터베이스를 통해 논리 네트워크 환경설정을 ovn-northd로 전달한다. 결국, ovn-northd는 환경설정을 저수준 형태로 변환하고, 이를 southbound 데이터베이스를 통해 모든 섀시로 전달한다.
 
-OVN 흐름에서의 상태 정보는 south에서 north로 흐른다. OVN은 현재 몇 가지의 상태 정보만을 제공한다. 먼저, ovn-northd는 northbound Logical_Switch_Port 테이블의 up 열을 구성한다. 만약 southbound Port_Binding 테이블에 논리 포트의 chassis 열이 비어있다면, up을 true로 설정한다. 그렇지 않으면 false로 설정한다. 이는 CMS가 VM의 네트워킹이 시작되었을 때 이를 탐지할 수 있도록 한다.
+OVN 흐름에서의 상태 정보는 south에서 north로 흐른다. OVN은 현재 몇 가지의 상태 정보만을 제공한다. 먼저, ovn-northd는 northbound Logical_Switch_Port 테이블의 up 열을 구성(populate)한다. 만약 southbound Port_Binding 테이블에 논리 포트의 chassis 열이 비어있지 않다면, up을 true로 설정한다. 그렇지 않으면 false로 설정한다. 이는 CMS가 VM의 네트워킹이 시작되었을 때 이를 탐지할 수 있도록 한다.
 
 둘째로, OVN은 그 환경설정이 실현되었음을 CMS에 피드백한다. 즉, CMS가 제공한 환경설정이 효과를 발생할 때 마다 피드백한다. 이 기능은 CMS가 순차 번호 프로토콜sequence number protocol에 참여해야 한다. 이는 다음과 같이 동작한다.
 
-1. CMS가 northbound 데이터베이스에 환경설정을 갱신하면, 같은 트랜잭션의 일부로써, NB_Global 테이블의 nb_cfg 열의 값을 늘린다. (이는 CMS가 환경설정이 언제 실현되었는지 알기 원할 때에만 필요하다.)
+  1. CMS가 northbound 데이터베이스에 환경설정을 갱신하면, 같은 트랜잭션의 일부로써, NB_Global 테이블의 nb_cfg 열의 값을 늘린다. (이는 CMS가 환경설정이 언제 실현되었는지 알기 원할 때에만 필요하다.) [ovn-nb.ovsschema](https://github.com/ovn-org/ovn/blob/main/ovn-nb.ovsschema){:target="_blank"} 참고
 
-2. ovn-northd가 northbound 데이터베이스의 주어진 스냅샷snapshot에 따라 southbound 데이터베이스를 갱신하면, 같은 트랜잭션의 일부로써 northbound NB_Global의 nb_cfg를 복사하여 southbound 데이버테이스의 SB_Global 테이블로 복사한다. (따라서, 두 데이터베이스의 옵저버 모니터링은 southbound 데이터베이스와 northbound가 서로 정보를 주고받은 시점을 알 수 있다.)
+  2. ovn-northd가 northbound 데이터베이스의 주어진 스냅샷snapshot에 따라 southbound 데이터베이스를 갱신하면, 같은 트랜잭션의 일부로써 northbound NB_Global의 nb_cfg를 복사하여 southbound 데이버테이스의 SB_Global 테이블로 복사한다. (따라서, 두 데이터베이스의 옵저버 모니터링은 southbound 데이터베이스와 northbound가 서로 정보를 주고받은 시점을 알 수 있다.) [ovn-sb.ovsschema](https://github.com/ovn-org/ovn/blob/main/ovn-sb.ovsschema){:target="_blank"} 참고
 
-3. ovn-northd가 southbound 데이터베이스 서버로부터 그 변경이 적용됨에 대한 확인confirmation을 수신한 후에, northbound NB_Global 테이블의 sb_cfg를 내려보낸(pushed down) nb_cfg 버전으로 갱신한다. (따라서, CMS 또는 기타 옵저버는 southbound 데이터베이스에 접속 없이 southbound 데이터베이스의 정보 전달 시점을 알 수 있다. )
+  3. ovn-northd가 southbound 데이터베이스 서버로부터 그 변경이 적용됨에 대한 확인confirmation을 수신한 후에, northbound NB_Global 테이블의 sb_cfg를 내려보낸(pushed down) nb_cfg 버전으로 갱신한다. (따라서, CMS 또는 기타 옵저버는 southbound 데이터베이스에 접속 없이 southbound 데이터베이스의 정보 전달 시점을 알 수 있다. )
 
-4. 각 섀시의 ovn-controller 프로세스는 갱신된 nb_cfg를 포함한 갱신된 southbound 데이터베이스를 수신한다. 이 프로세스는 결국 섀시의 Open vSwitch 인스턴스에 설치된 물리 플로우flow를 갱신한다. Open vSwitch로부터 물리 플로우이 갱신되었다는 확답을 수신하면, southbound 데이터베이스의 고유(its own) Chassis 레코드를 갱신한다.
+  4. 각 섀시의 ovn-controller 프로세스는 갱신된 nb_cfg를 포함한 갱신된 southbound 데이터베이스를 수신한다. 이 프로세스는 결국 섀시의 Open vSwitch 인스턴스에 설치된 물리 플로우flow를 갱신한다. Open vSwitch로부터 물리 플로우가 갱신되었다는 확답을 수신하면, southbound 데이터베이스의 고유(its own) Chassis 레코드를 갱신한다.
 
-5. ovn-northd는 southbound 데이터베이스에 있는 모든 Chassis 레코드의 nb_cfg 열을 모니터링한다. 이들 모든 레코드의 최소값을 계속 추적하며, 이를 northbound NB_Global 테이블의 hv_cfg 열에 복제한다. (따라서, CMS 또는 기타 옵저버는 언제 모든 하이퍼바이저가 northbound 환경설정을 가지는 지 알 수 있다.)
+  5. ovn-northd는 southbound 데이터베이스에 있는 모든 Chassis 레코드의 nb_cfg 열을 모니터링한다. 이들 모든 레코드의 최소값을 계속 추적하며, 이를 northbound NB_Global 테이블의 hv_cfg 열에 복제한다. (따라서, CMS 또는 기타 옵저버는 언제 모든 하이퍼바이저가 northbound 환경설정을 가지는 지 알 수 있다.)
 
 # 섀시 설정
 OVN 배포에서의 각 섀시는 OVN에만 할당된 Open vSwitch 브릿지로 설정되어야 한다. 이는 통합 브릿지(integration bridge)라 불린다. 시스템 시작 스크립트는 ovn-controller를 구동 하기 전에 이 브릿지를 생성한다. 만약 이 브릿지가 ovn-controller 시작 시에 존재하지 않으면, 아래에 제안된 기본 환경설정을 가지고 자동으로 생성될 것이다. 통합 브릿지의 포트는 다음을 포함한다.
