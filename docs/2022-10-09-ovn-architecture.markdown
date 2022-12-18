@@ -16,7 +16,7 @@ OVN 배포는 다양한 구성 요소로 이뤄진다.
 
 * 클라우드 관리 시스템(CMS, Cloud Management System)은 OVN의 말단 클라이언트(사용자 및 관리자를 통한)이다. OVN 통합integration은 CMS특정 플러그인과 관련 소프트웨어(아래 확인)의 설치를 요구한다. OVN은 처음에는 오픈스택OpenStack을 CMS로 잡았다. 일반적으로 하나의 CMS를 상정하지만, 서로 다른 OVN 배포 부분을 관리하는 다중 CMS 환경도 생각해 볼 수 있다.
 물리 또는 가상 노드에 설치된 OVN 데이터베이스는 중심에 위치한다.
-* 하나 이상의(또는 많은 수) 하이퍼바이저. 하이퍼바이저는 Open vSwitch를 구동해야 하며, OVS 소스 트리의 IntegrationGuide.rst에 서술된 인터페이스를 구현한다. Open vSwitch가 지원하는 하이퍼바이저 플랫폼은 어떤 것이든 사용 가능하다.
+* 하나 이상의(또는 많은 수) 하이퍼바이저. 하이퍼바이저는 Open vSwitch를 구동해야 하며, OVS 소스 트리의 [IntegrationGuide.rst](https://github.com/openvswitch/ovs/blob/master/Documentation/topics/integration.rst)에 서술된 인터페이스를 구현한다. Open vSwitch가 지원하는 하이퍼바이저 플랫폼은 어떤 것이든 사용 가능하다.
 * 0개 이상의 게이트웨이. 게이트웨이는 터널과 물리 이더넷 포트 간 패킷 상호 포워딩을 통해 터널 기반 논리 네트워크를 물리 네트워크로 확장한다. 이는 비 가상화된 머신을 논리 네트워크에 참여할 수 있도록 한다. 게이트웨이는 물리 호스트, 가상 머신, 또는 vtep(5)기술을 지원하는 ASIC 기반 하드웨어 스위치여야 한다. 하이퍼바이저와 게이트웨이는 모두 전송 노드transport node 또는 섀시chassis라 불린다.
 
 아래의 다이어그램은 OVN의 주 구성요소 및 관련 소프트웨어의 상호작용interact를 보여준다. 다이어그램의 최상단부터 보면, 다음과 같다.
