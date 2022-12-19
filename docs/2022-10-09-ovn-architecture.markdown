@@ -234,44 +234,17 @@ OVN은 이 문제에 대해 두가지 해결책을 제시한다. **reside-on-red
 
 분산 게이트웨이 포트에는 **reside-on-redirect-chassis** 옵션을 설정하지 말라. 위의 다이어그램에서, LS1, ..., LSn에서 LR1을 연결하는 LRP에 설정되어야 한다.
 
+두번째 해결첵은 분산 게이트웨이 포트를 위한 **redirect-type** 옵션이다. 이 옵션을 **bridged**에 설정하면, 게이트웨이 섀시로 리다이랙트된 패킷이 터널되는 대신 **localnet** 포트를 통해 가도록 한다. 이 옵션은 OVN이 게이트 섀시로 리다이랙트되지 않은 패킷을 다루는 방식에는 변경을 주지 않는다.
 
+**redirect-type** 옵션은 관리자나 CMS가 Open vSwitch 데이터베이스의 **ovn-chassis-mac-mappings**를 설정함으로써 논리 라우터를 위한 고유의 이더넷 주소를 갖는 각 참여 섀시를 설정하도록 한다. 이는 **reside-on-redirect-chassis** 의 설정보다 더 어렵다.
 
-The second solution is the redirect-type option for distributed gateway
-ports. Setting this option to bridged causes  packets  that  are  redi‐
-rected  to the gateway chassis to go over the localnet ports instead of
-being tunneled. This option does not change how OVN treats packets  not
-redirected to the gateway chassis.
+분산 게이트웨이 포트의 **redirect-type** 옵션을 설정하자.
 
-The  redirect-type option requires the administrator or the CMS to con‐
-figure each participating chassis with a unique  Ethernet  address  for
-the  logical  router  by  setting  ovn-chassis-mac-mappings in the Open
-vSwitch database, for use by ovn-controller. This makes it more  diffi‐
-cult to configure than reside-on-redirect-chassis.
+__확장성을 위한 분산 게이트웨이 포트의 사용__
 
-Set the redirect-type option on a distributed gateway port.
+분산 게이트웨이 포트의 가장 주요한 목적은 외부 네트워크와의 연결성 제공이지만, 확장성을 위한 특수한 사용 사례도 존재한다.
 
-__Using Distributed Gateway Ports For Scalability__
-
-Although  the  primary  goal of distributed gateway ports is to provide
-connectivity to external networks, there is  a  special  use  case  for
-scalability.
-
-In  some  deployments,  such  as the ones using ovn-kubernetes, logical
-switches are bound to individual chassises, and are connected by a dis‐
-tributed logical router. In such deployments, the chassis level logical
-switches are centralized on the chassis instead of  distributed,  which
-means  the ovn-controller on each chassis doesn’t need to process flows
-and ports of logical switches on other chassises. However, without  any
-specific  hint,  ovn-controller  would  still  process  all the logical
-switches as if they are fully distributed. In  this  case,  distributed
-gateway port can be very useful. The chassis level logical switches can
-be connected to the distributed router using distributed gateway ports,
-by setting the gateway chassis (or HA chassis groups with only a single
-chassis in it) to the chassis that each logical  switch  is  bound  to.
-ovn-controller  would  then skip processing the logical switches on all
-the other chassises, largely improving the scalability, especially when
-there are a big number of chassises.
-
+**ovn-kubernetes**를 사용하는것 과 같은 어떤 배포에서는, 논리 스위치는 개별 섀시에 묶인다. 그리고 분산 논리 라우터에 연결된다. 이러한 배포에서, 섀시 수준 논리 스위치는 분산보다는 섀시에 중앙화된다. 즉, 각 섀시의 **ovn-controller**는 플로우 및 다른 섀시의 논리 스위치 포트를 처리할 필요가 없다. 그러나, 아무 힌트가 없다면 **ovn-controller**는 완전한 분산을 이룬 것 처럼 논리 스위치를 처리할 것이다. 이 경우, 분산 게이트웨이 포트는 매우 유용하다. 섀시 수준 논리 스위치는 분산 게이트웨이 포트를 사용하여 분산 라우터에 접속된다. 게이트웨이 섀시(또는 단일 섀시만 있는 HA 섀시 그룹)를 각 논리 스위치가 묶인 섀시로 설정함으로써 말이다. **ovn-controller**는 모든 다른 섀시의 논리 스위치의 처리를 무시할 것이다. 이는 특히 섀시가 많은 경우 확장성에 발전을 가져온다.
 
 # VIF의 수명 주기
 독립되어 표현된 테이블(Table)과 그 스키마는 이해하기가 어렵다. 아래는 그 예이다.
