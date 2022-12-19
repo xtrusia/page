@@ -23,16 +23,16 @@ OVN 배포는 다양한 구성 요소로 이뤄진다.
 
 * 위에서 정의한 클라우드 관리 시스템
 * OVN/CMS 플러그인 는 OVN에 연결짓기 위한 CMS의 구성요소이다. 플러그인의 주 목적은 CMS의 환경설정 데이터베이스에 CMS 특정 포멧으로 저장된 논리 네트워크 환경설정에 대한 CMS의 개념을 OVN이 이해할 수 있는 중간 표현으로 해석하는 것이다. 이 구성요소는 필수적으로 CMS에 특정되어 있다. 따라서, 새 플로그인은 OVN에 통합된 각 CMS를 위해 개발될 필요가 있다. 아래 다이어그램에 있는 모든 구성요소는 CMS에 독립적이다.
-* OVN Northbound 데이터베이스는 OVN/CMS 플러그인에 의해 전달된passed down 논리 네트워크 환경설정의 중간 표현을 수신한다. 데이터베이스 스키마는 CMS에서 사용된 개념을 impedance matched 구현한다. 따라서, 논리 스위치, 라우터, ACL 등의 개념을 직접 지원한다. 자세한 사항은 [ovn-nb(5)](https://man7.org/linux/man-pages/man5/ovn-nb.5.html){:target="_blank"}을 보라 OVN Northbound 데이터베이스는 클라이언트가 두가지이다. 상단의 OVN/CMS 플러그인과 하단의 ovn-northd이다.
-* [ovn-northd(8)](https://man7.org/linux/man-pages/man8/ovn-northd.8.html){:target="_blank"} 은 상위 OVN Northbound 데이터베이스, 그리고 하위 OVN Southbound 데이터베이스에 접속한다. 이는 논리적 네트워크 환경설정을 기존conventional 네트워크 개념으로 변환한다. 이는 OVN Northbound 데이터베이스에서 취해져서, 하단의 OVN Southbound에 있는 논리 데이터패스datapath 플로우flows으로 변환된다.
-* OVN Southbound 데이터베이스는 시스템의 중심이다. 이 데이터베이스의 클라이언트는 상단의 [ovn-northd(8)](https://man7.org/linux/man-pages/man8/ovn-northd.8.html){:target="_blank"}, 하단 모든 전송 노드에 있는 [ovn-controller(8)](https://man7.org/linux/man-pages/man8/ovn-controller.8.html){:target="_blank"}이다. OVN Southbound 데이터베이스는 세 종류의 데이터를 포함한다. 
-  하이퍼바이저 또는 다른 노드에 닿는 방법을 지정하는 물리 네트워크(PN) 테이블, 논리 데이터패스 플로우라 불리는 논리 네트워크를 서술하는 논리 네트워크(LN), 논리 네트워크 구성요소를 물리 네트워크에 연결짓는 바인딩Binding 테이블이 그것이다. 하이퍼바이저는 PN과 Port_Binding 테이블을 구성하며, [ovn-northd(8)](https://man7.org/linux/man-pages/man8/ovn-northd.8.html){:target="_blank"}은 LN 테이블을 구성한다. 
+* OVN Northbound 데이터베이스는 OVN/CMS 플러그인에 의해 전달된passed down 논리 네트워크 환경설정의 중간 표현을 수신한다. 데이터베이스 스키마는 CMS에서 사용된 개념을 impedance matched 구현한다. 따라서, 논리 스위치, 라우터, ACL 등의 개념을 직접 지원한다. 자세한 사항은 [ovn-nb(5)](https://www.ovn.org/support/dist-docs/ovn-nb.5.html){:target="_blank"}을 보라 OVN Northbound 데이터베이스는 클라이언트가 두가지이다. 상단의 OVN/CMS 플러그인과 하단의 ovn-northd이다.
+* [ovn-northd(8)](https://www.ovn.org/support/dist-docs/ovn-northd.8.html){:target="_blank"} 은 상위 OVN Northbound 데이터베이스, 그리고 하위 OVN Southbound 데이터베이스에 접속한다. 이는 논리적 네트워크 환경설정을 기존conventional 네트워크 개념으로 변환한다. 이는 OVN Northbound 데이터베이스에서 취해져서, 하단의 OVN Southbound에 있는 논리 데이터패스datapath 플로우flows으로 변환된다.
+* OVN Southbound 데이터베이스는 시스템의 중심이다. 이 데이터베이스의 클라이언트는 상단의 [ovn-northd(8)](https://www.ovn.org/support/dist-docs/ovn-northd.8.html){:target="_blank"}, 하단 모든 전송 노드에 있는 [ovn-controller(8)](https://www.ovn.org/support/dist-docs/ovn-controller.8.html){:target="_blank"}이다. OVN Southbound 데이터베이스는 세 종류의 데이터를 포함한다. 
+  하이퍼바이저 또는 다른 노드에 닿는 방법을 지정하는 물리 네트워크(PN) 테이블, 논리 데이터패스 플로우라 불리는 논리 네트워크를 서술하는 논리 네트워크(LN), 논리 네트워크 구성요소를 물리 네트워크에 연결짓는 바인딩Binding 테이블이 그것이다. 하이퍼바이저는 PN과 Port_Binding 테이블을 구성하며, [ovn-northd(8)](https://www.ovn.org/support/dist-docs/ovn-northd.8.html){:target="_blank"}은 LN 테이블을 구성한다. 
   
   OVN Southbound 데이터베이스 성능은 여러 개의 전송 노드와 함께 규모 조정이 가능해야 한다. 이는 병목현상 때문에 [ovsdb-server(1)](https://man7.org/linux/man-pages/man1/ovsdb-server.1.html){:target="_blank"}를 대상으로 한 작업이 필요하다. 사용 가능성을 위한 클러스터링이 필요할 수 있다.
 
 나머지 구성요소는 각 하이퍼바이저마다 존재한다.
 
-* [ovn-controller(8)](https://man7.org/linux/man-pages/man8/ovn-controller.8.html){:target="_blank"}은 각 하이퍼바이저 및 소프트웨어 게이트웨이에 존재하는 OVN의 에이전트agent이다. Northbound는 OVN Southbound 데이터베이스에 접속하여 OVN 환경설정과 그 상태를 학습하고, 하이퍼바이저의 상태를 PN 테이블 및 바인딩 테이블의 섀시Chassis 열을 구성한다. Southbound는 네트워크 트래픽 제어를 위해 OpenFlow 컨트롤러인 [ovs-vswitchd(8)](http://www.openvswitch.org/support/dist-docs/ovs-vswitchd.8.txt){:target="_blank"}에 접속하고, 로컬 [ovsdb-server(1)](https://man7.org/linux/man-pages/man1/ovsdb-server.1.html){:target="_blank"}에 접속하여 Open vSwitch 환경설정을 모니터링 및 제어한다.
+* [ovn-controller(8)](https://www.ovn.org/support/dist-docs/ovn-controller.8.html){:target="_blank"}은 각 하이퍼바이저 및 소프트웨어 게이트웨이에 존재하는 OVN의 에이전트agent이다. Northbound는 OVN Southbound 데이터베이스에 접속하여 OVN 환경설정과 그 상태를 학습하고, 하이퍼바이저의 상태를 PN 테이블 및 바인딩 테이블의 섀시Chassis 열을 구성한다. Southbound는 네트워크 트래픽 제어를 위해 OpenFlow 컨트롤러인 [ovs-vswitchd(8)](http://www.openvswitch.org/support/dist-docs/ovs-vswitchd.8.txt){:target="_blank"}에 접속하고, 로컬 [ovsdb-server(1)](https://man7.org/linux/man-pages/man1/ovsdb-server.1.html){:target="_blank"}에 접속하여 Open vSwitch 환경설정을 모니터링 및 제어한다.
 
 * [ovs-vswitchd(8)](http://www.openvswitch.org/support/dist-docs/ovs-vswitchd.8.txt){:target="_blank"}와 [ovsdb-server(1)](https://man7.org/linux/man-pages/man1/ovsdb-server.1.html){:target="_blank"}은 Open vSwitch의 기존 구성요소이다.
 
@@ -153,10 +153,127 @@ Port_Binding 테이블은 논리 스위치 포트 종류와 직접 관련되지 
 **vtep**, **l2gateway**, **l3gateway**, **chassisredirect**와 같은 포트 바인딩은 게이트웨이에서 사용된다. 이들은 아래 **게이트웨이**에서 설명한다.
 
 # 게이트웨이
+게이트웨이는 논리 네트워크와 물리 네트워크 사이에 제한된 연결을 제공한다. 또한 서로 다른 OVN 배포간 연결성도 제공한다. 이 절에서는 전자에 집중하고, 후자는 **OVN 배포 상호연결**에서 자세히 다룬다.
+
+OVN은 다양한 종류의 게이트웨이를 지원한다.
+
+__VTEP 게이트웨이__
+VTEP 게이트웨이는 OVN 논리 네트워크를 Open vSwitch에 수반되는 OVSDB VTEP 스키마를 구현하는 물리(또는 가상) 스위치에 연결한다('VTEP 게이트웨이' 용어는 약간 잘못된 이름이다. VTP이 단지 VXLAN 터널 종단점이기 때문이다. 그러나 잘 정립된 이름이다.). 더 자세한 정보는 **VIF의 수명 주기**를 보라.
+
+VTEP 게이트웨이의 주 사용 사례는 OVSDB VTEP 스키마를 지원하는 물리 ToR 스위치를 사용해서, 물리 서버를 OVN 논리 네트워크에 연결하는 것이다.
+
+__L2 게이트웨이__
+L2 게이트웨이는 단순히 특정 섀시에서 사용가능한 지정된 물리 L2 세그먼트를 논리 네트워크에 연결한다. 물리 네트워크는 사실상 논리 네트워크의 일부가 된다.
+
+L2 게이트웨이를 설정하기 위해, CMS는 **l2gateway** LSP를 적절한 논리 스위치에 추가하고, 바인드되어야 하는 섀시의 이름을 LSP 옵션에 설정한다(확인요망). **ovn-northd**는 이 환경설정을 southbound **Port_Binding**에 복사한다. 지정된 섀시에서, **ovn-controller**는 이 세그먼트를 향하거나 오는 패킷을 적절히 포워딩한다.
+
+L2 게이트웨이 포트는 **localnet** 포트와 같은 기능을 갖는다. 그러나, **localnet** 포트의 경우, 물리 네트워크가 하이퍼바이저 간 전송자가 된다. L2 게이트웨이의 경우, 패킷은 여전히 터널을 통해 하이퍼바이저 간 전달된다. **l2gateway** 포트는 물리 네트워크에 있는 패킷을 위해서만 사용된다. L2 게이트웨이를 위한 애플리케이션은 VTEP 게이트웨이와 비슷하다. 예를 들어, 비 가상화 머신을 논리 네트워크에 추가하는 것이 그것이다. 그러나 L2 게이트웨이는 ToR 하드웨어 스위치에서 특별히 지원을 필요로 하지 않는다.
+
+__L3 게이트웨이 라우터__
+**논리 네트워크** 에서 설명하겠지만, 보통의 OVN 논리 라우터는 분산형이다. 이들은 한 곳에만 구현되지 않고, 모든 하이퍼바이저 섀시에 존재한다. 이는 중앙집중적으로 구현되어야 하는 SNAT과 DNAT같은 스테이트풀(stateful) 서비스에는 문제가 된다.
+
+이러한 기능을 허용하기 위해, OVN은 L3 게이트웨이 라우터를 지원한다. 이는 OVN 논리 라우터로, 지정 섀시에 구현이 된다. 게이트웨이 라우터는 보통 분산 논리 라우터와 물리 네트워크 간에 사용된다. VM과 컨테이너가 연결되는 이면에 존재하는 분산된 논리 라우터와 논리 스위치는 사실 모든 하이퍼바이저에 존재한다. 분산된 라우터와 게이트웨이 라우터는 다른 논리 스위치에 의해 연결된다. 때로 이는 join 논리 스위치로 불린다(OVN 논리 라우터는 스위치의 간섭 없이 다른 곳에 직접 연결될 수 있다. 그러나, OVN 구현은 논리 스위치에 연결된 게이트웨이 논리 라우터만 지원한다. join 논리 스위치를 사용하는 것은 또한 분산 라우터가 필요로 하는 IP 주소의 갯수를 줄일 수 있다.). 반면에, 게이트웨이 라우터는 물리 네트워크에 연결되는 **localnet** 포트를 갖는 다른 논리 스위치에 연결된다.
+
+아래의 다이어그램은 전형적인 상황을 보여준다. 하나 이상의 논리 스위치 LS1, ..., LSn은 분산 논리 라우터 LR1에 연결된다. LR1은 다시 LSJoin을 통해 게이트웨이 논리 라우터 GLR에 연결한다. 이는 또한 논리 스위치 LSlocal에 연결된다. LSlocal은 물리 네트워크로 연결하기 위한 **localnet** 포트를 포함한다.
+
+                                       LSlocal
+                                          |
+                                         GLR
+                                          |
+                                       LSjoin
+                                          |
+                                         LR1
+                                          |
+                                     +----+----+
+                                     |    |    |
+                                    LS1  ...  LSn
+
+L3 게이트웨이 라우터를 설정하기 위해, CMS는 라우터의 northbound **Logical_Router**의 **options:chassis**를 섀시의 이름으로 설정한다. 이에 응하여, **ovn-northd**는 논리 라우터를 그 이웃에 연결하기 위해 southbound 데이터베이스의 특정 **l3gateway** 포트 바인딩(**patch** 바인딩 대신)을 사용한다. 결국, **ovn-controller**은 지역에서 처리하는 대신 패킷을 이 포트 바인딩으로부터 지정된 지정 L3 게이트웨이 섀시로 터널링(tunnel)한다.
+
+DNAT과 SNAT 규칙은 1:다 SNAT(IP 마스커레이딩)을 처리할 수 있는 중앙 위치를 제공하는 게이트웨이 라우터와 연관이 있을 수 있다. 아래에 설명된 분산된 게이트웨이 포트 또한 NAT를 지원한다.
+
+__분산된 게이트웨이 포트__
+__분산된 게이트웨이 포트__ 는 __게이트웨이 섀시__ 라 불리는 별도의 섀시 하나를 지정(중앙 처리를 위함)하기 위해 특별히 설정되는 논리 라우터 포트이다. 분산된 게이트웨이 포트는 외부로 연결되는 LSP를 갖는 논리 스위치에 연결해야 한다. 즉, **localnet** LSP 또는 다른 OVN 배포(**OVN 배포 상호연결**을 보라) 중 둘 중 하나에 연결된다. 분산된 게이트웨이 포트를 돌아다니는 패킷은 가능하면 게이트웨이 섀시의 참여 없이 처리된다. 그러나 그 참여가 필요한 경우, 추가적인 홉(hop)을 취한다.
+
+아래의 다이어그램은 분산된 게이트웨이 포트의 사용을 그린다. 논리 스위치 LS1, ..., LSn은 분산 논리 라우터 LR1에 접속한다. 그리고 이는 분산 게이트웨이 포트를 통해 물리적 네트워크와 연결하기 위해 **localnet** 포트를 포함하는 논리 스위치 LSlocal에 연결된다.
+
+                                       LSlocal
+                                          |
+                                         LR1
+                                          |
+                                     +----+----+
+                                     |    |    |
+                                    LS1  ...  LSn
+
+**ovn-northd**는 한 개가 아닌 두 southbound **Port_Binding** 레코드를 생성하여 분산된 게이트웨이 포트를 표현한다. 이 중 하나는 which is used for as much traffic as it can LRP를 위해 명명된 **patch** 포트 바인딩이다. 다른 하나는 **chassisredirect** 형태를 갖는 **cr**-__port__명명된 포트 바인딩이다. **chassisredirect** 포트 바인딩은 특별한 임무를 갖는다. 패킷이 이 포트로 출력되면, 플로우 테이블은 게이트웨이 섀시로 터널링되도록 한다. at which point 이는 자동으로 **patch** 포트 바인딩으로의 출력이 된다. 게다가, 플로우 테이블은 이 포트 바인딩으로의 출력이 될 수 있다. 게이트 섀시에서 특정 작업이 일어나야 하는 경우에 말이다. 반면에 **chassisredirect** 포트 바인딩은 사용되지 않는다(예를 들어, 패킷을 전혀 받지 않는다.).
+
+CMS는 세가지 방법을 통해 분산 게이트웨이 포트를 설정할 수 있다. [ovn-nb(5)](https://www.ovn.org/support/dist-docs/ovn-nb.5.html){:target="_blank"}의 **Logical_Router_Port**를 위한 문서 내에 **분산 게이트웨이 포트**를 확인하라.
+
+분산 게이트웨이 포트는 고사용성을 지원한다. 하나 이상의 섀시가 지정되면, OVN은 게이트웨이 섀시로 한번에 하나만 사용한다. OVN은 BFD를 사용해서 게이트웨이 연결성을 모니터링한다. 온라인인 더 높은 우선순위를 갖는 게이트웨이를 선호한다.
+
+논리 라우터는 여러개의 분산된 게이트웨이 포트를 가질 수 있다. 각각은 서로 다른 외부 네트워크에 연결된다. 그러나, NAT와 로드 밸런서 같은 특정 기능은 하나 이상의 분산 게이트웨이 포트 설정을 갖는 논리 라우터를 아직 지원하지 않는다.
+
+__물리 VLAN MTU 이슈__
+아래와 같은 다이어그램을 고려해 보자.
+
+                                       LSlocal
+                                          |
+                                         LR1
+                                          |
+                                     +----+----+
+                                     |    |    |
+                                    LS1  ...  LSn
+
+각 논리 스위치 LS1, ..., LSn이 LSlocal의 **localnet** 포트에 연결된 물리 VLAN 태그된 네트워크에 브릿지되어 있다고 가정하자. LR1의 분산 게이트웨이 포트를 통해서 말이다. 만약 LS __i__ 로 향하는 패킷이 외부 네트워크로 향한다면, OVN은 이를 터널을 통해 게이트웨이 섀시로 전송한다. 이 패킷은 LR1의 논리 라우터 파이프라인을 이동하며(아마도 undergoes NAT), 결국에는 LSlocal의 **localnet** 포트로 향한다. 네트워크의 모든 물리 링크가 같은 MTU를 갖는다면, 이들 패킷의 터널을 통한 전송은 MTU 문제를 일으킨다. 터널의 오버헤드는 터널을 통해서부터 게이트웨이 섀시로 향하는 모든 물리 MTU를 사용하는 패킷을 막는다(파편화 없이).
+
+OVN은 이 문제에 대해 두가지 해결책을 제시한다. **reside-on-redirect-chassis**와 **redirect-type** 옵션이 그것이다. 두 해결책 모두 각 논리 스위치 LS1, ..., LSn이 **localnet** 논리 스위치 포트 LN1, ..., LNn을 각각 포함해야 한다. 즉, 각 섀시에 존재한다는 것이다. 둘 다 패킷을 터널 대신 **localnet** 포트를 통해 전송하게 한다. They differ  in which packets-some or all-are sent this way. 이 두 옵션의 가장 알려진 트레이드오프는 **reside-on-redirect-chassis**는 환경설정이 쉽고, **redirect-type**은 east-west 트래픽의 경우 성능이 더 낫다는 것이다.
+
+첫 해결책은 논리 라우터 포트를 위한 **reside-on-redirect-chassis** 옵션이다. 이 옵션을 LS1에서 LR1까지 설정하면, 게이트웨이 섀ㅖ시를 제외한 곳에서 LS1에서 LR1로의 포워딩을 비활성화 한다. 게이트웨이 섀시를 제외한 다른 셰시에서 이 변경이 의미하는 바는 패킷이 LN1으로 포워딩되는 대신 LR1으로 포워딩된다는 것이다. 게이트웨이 섀시의 LN1 인스턴스는 패킷을 받고 LR1로 포워딩한다. 패킷은 LR1 논리 라우터 파이프라인을 이동하며(아마도 undergoes NAT), 결국에는 LSlocal의 **localnet** 포트로 향한다. 이 패킷은 MTU 이슈를 피하기 위해 터널을 지나지 않는다.
+
+이 옵션은 중앙화된 '분산된' 논리 라우터 LR1을 야기한다. 게이트웨이 섀시를 제외한 다른 섀시에서 LS1에서 LR1으로 포워딩되는 패킷이 없기 때문이다. 그러므로, north-south뿐만 아니라 east-west 트래픽도 게이트웨이 섀시를 통해 전달된다(The naive  ``fix’’  of  allowing east-west traffic to flow directly between chassis over LN1 does not work because routing sets the Ethernet source address  to  LR1’s  source  address. Seeing this single Ethernet source address originate from all of the chassis  will  confuse the  physical switch.)
+
+분산 게이트웨이 포트에는 **reside-on-redirect-chassis** 옵션을 설정하지 말라. 위의 다이어그램에서, LS1, ..., LSn에서 LR1을 연결하는 LRP에 설정되어야 한다.
 
 
 
-# VIF의 생에 주기
+The second solution is the redirect-type option for distributed gateway
+ports. Setting this option to bridged causes  packets  that  are  redi‐
+rected  to the gateway chassis to go over the localnet ports instead of
+being tunneled. This option does not change how OVN treats packets  not
+redirected to the gateway chassis.
+
+The  redirect-type option requires the administrator or the CMS to con‐
+figure each participating chassis with a unique  Ethernet  address  for
+the  logical  router  by  setting  ovn-chassis-mac-mappings in the Open
+vSwitch database, for use by ovn-controller. This makes it more  diffi‐
+cult to configure than reside-on-redirect-chassis.
+
+Set the redirect-type option on a distributed gateway port.
+
+__Using Distributed Gateway Ports For Scalability__
+
+Although  the  primary  goal of distributed gateway ports is to provide
+connectivity to external networks, there is  a  special  use  case  for
+scalability.
+
+In  some  deployments,  such  as the ones using ovn-kubernetes, logical
+switches are bound to individual chassises, and are connected by a dis‐
+tributed logical router. In such deployments, the chassis level logical
+switches are centralized on the chassis instead of  distributed,  which
+means  the ovn-controller on each chassis doesn’t need to process flows
+and ports of logical switches on other chassises. However, without  any
+specific  hint,  ovn-controller  would  still  process  all the logical
+switches as if they are fully distributed. In  this  case,  distributed
+gateway port can be very useful. The chassis level logical switches can
+be connected to the distributed router using distributed gateway ports,
+by setting the gateway chassis (or HA chassis groups with only a single
+chassis in it) to the chassis that each logical  switch  is  bound  to.
+ovn-controller  would  then skip processing the logical switches on all
+the other chassises, largely improving the scalability, especially when
+there are a big number of chassises.
+
+
+# VIF의 수명 주기
 독립되어 표현된 테이블(Table)과 그 스키마는 이해하기가 어렵다. 아래는 그 예이다.
 
 하이퍼바이저의 VIF는 하이퍼바이저에서 직접 구동중인 VM 또는 컨테이너에 연결된 가상 네트워크 인터페이스이다(이는 VM 내에서 구동되는 컨테이너의 인터페이스와는 다르다.).
