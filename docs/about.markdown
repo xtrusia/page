@@ -7,7 +7,7 @@ nav_order: 0
 
 Email: one@seyeong.kim
 
-I'm Seyeong Kim Sustaining Engineer.
+I'm Seyeong Kim Sustaining Engineer in Canonical.
 
 I started Linux officially in 2001 with debian distribution, before that time, I just was an user on debian as a student, After joining university, I used Linux as project base operating system and my home desktop. After graduated, I developed cloud service based on Linux server and client several years in my own company before canonical.
 I usually work for cloud and server area. Sometimes work for easy kernel issue.
@@ -16,7 +16,7 @@ I usually work for cloud and server area. Sometimes work for easy kernel issue.
 * 2013 - 2014: Software Enginneer, A2Company
 * 2012 - 2013: Software Enginneer, KT Cloudware
 * 2011 - 2012: Software Enginneer, AHEMS cloud startup 
-* 2001 - 2010: Software Engineering, Mechanical Engineering. Sungkyunkwan University.
+* 2001 - 2010: Software Engineering, Mechanical Engineering. Sungkyunkwan University. ( includes military service 2002-2005 )
 
 # Upstream Works
 
