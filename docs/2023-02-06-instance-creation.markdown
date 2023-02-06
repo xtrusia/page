@@ -133,6 +133,8 @@ ate", "subnets": [{"cidr": "192.168.21.0/24", "dns": [], "gateway": {"address": 
 
 {% endhighlight %}
 
+# Status check by using command
+
 {% highlight shell %}
 compute ovs-vsctl show
 f3af6eb3-a68a-468d-b9a5-645c49e04177
