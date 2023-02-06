@@ -2,6 +2,7 @@
 layout: post
 title: OVN 101 when Instance creation
 nav_order: 2
+reflowMarkdown.preferredLineLength: 60
 ---
 
 # Prerequisite
@@ -9,6 +10,8 @@ ovn based openstack env by using juju.
 
 
 # Log history
+
+this is time serial order.
 
 ## nova-compute
 {% highlight shell %}
