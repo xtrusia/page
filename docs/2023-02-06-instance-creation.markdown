@@ -130,6 +130,83 @@ ate", "subnets": [{"cidr": "192.168.21.0/24", "dns": [], "gateway": {"address": 
 
 {% endhighlight %}
 
+{% highlight shell %}
+compute ovs-vsctl show
+f3af6eb3-a68a-468d-b9a5-645c49e04177
+    Manager "ptcp:6640:127.0.0.1"
+        is_connected: true
+    Bridge br-data
+        fail_mode: standalone
+        datapath_type: system
+        Port patch-provnet-67d070c2-c2ae-43b0-896f-ae83f1a1f124-to-br-int
+            Interface patch-provnet-67d070c2-c2ae-43b0-896f-ae83f1a1f124-to-br-int
+                type: patch
+                options: {peer=patch-br-int-to-provnet-67d070c2-c2ae-43b0-896f-ae83f1a1f124}
+        Port br-data
+            Interface br-data
+                type: internal
+        Port ens8
+            Interface ens8
+                type: system
+    Bridge br-int
+        fail_mode: secure
+        datapath_type: system
+        Port tapb34fc699-b0
+            Interface tapb34fc699-b0
+        Port tap0ab6a346-61
+            Interface tap0ab6a346-61
+        Port patch-br-int-to-provnet-67d070c2-c2ae-43b0-896f-ae83f1a1f124
+            Interface patch-br-int-to-provnet-67d070c2-c2ae-43b0-896f-ae83f1a1f124
+                type: patch
+                options: {peer=patch-provnet-67d070c2-c2ae-43b0-896f-ae83f1a1f124-to-br-int}
+        Port br-int
+            Interface br-int
+                type: internal
+    ovs_version: "2.13.8"
+{% endhighlight %}
 
+{% highlight shell %}
+ovn-chassis ovn-nbctl show
+switch 5e29b631-a77a-44b7-85c2-e1acde3784ae (neutron-b34fc699-b789-45a0-a4de-78b8e2c60f14) (aka private)
+    port 07d48fc4-736f-43fb-a34f-86e64bbc978f
+        type: localport
+        addresses: ["fa:16:3e:70:89:70 192.168.21.2"]
+    port 0ab6a346-6181-4fa1-81e2-3203cf8a2a66
+        addresses: ["fa:16:3e:24:08:c3 192.168.21.151"]
+    port 8c402a23-89c8-4386-a3ab-6edfb5606206
+        type: router
+        router-port: lrp-8c402a23-89c8-4386-a3ab-6edfb5606206
+switch 3f61a2c3-ea62-48b3-b966-38f34bb177c9 (neutron-21a6e1de-695d-4b76-844e-1c2bce717320) (aka ext_net)
+    port bc51714a-8fce-46a5-ba22-e96f8d2db30e
+        type: localport
+        addresses: ["fa:16:3e:01:0d:01"]
+    port 21b6f198-9f52-4dd5-b737-9f38a17ed97c
+        type: router
+        router-port: lrp-21b6f198-9f52-4dd5-b737-9f38a17ed97c
+    port provnet-67d070c2-c2ae-43b0-896f-ae83f1a1f124
+        type: localnet
+        addresses: ["unknown"]
+router ccfe0567-189f-446d-a6ff-3ce9680db35c (neutron-2ac4e6d8-7aab-4932-ad3a-b667ed737e0a) (aka provider-router)
+    port lrp-21b6f198-9f52-4dd5-b737-9f38a17ed97c
+        mac: "fa:16:3e:8e:d5:1b"
+        networks: ["10.5.153.188/16"]
+        gateway chassis: [juju-61fe7a-default-8.cloud.sts]
+    port lrp-8c402a23-89c8-4386-a3ab-6edfb5606206
+        mac: "fa:16:3e:4f:71:dc"
+        networks: ["192.168.21.1/24"]
+    nat 79dbbed7-3697-417b-a828-45d4e71dcafb
+        external ip: "10.5.153.188"
+        logical ip: "192.168.21.0/24"
+        type: "snat"
+{% endhighlight %}
 
-
+{% highlight shell %}
+ovn-chassis ovn-sbctl show
+Chassis juju-61fe7a-default-8.cloud.sts
+    hostname: juju-61fe7a-default-8.cloud.sts
+    Encap geneve
+        ip: "10.5.2.34"
+        options: {csum="true"}
+    Port_Binding "0ab6a346-6181-4fa1-81e2-3203cf8a2a66"
+    Port_Binding cr-lrp-21b6f198-9f52-4dd5-b737-9f38a17ed97c
+{% endhighlight %}
