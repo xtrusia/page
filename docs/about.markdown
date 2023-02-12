@@ -55,3 +55,7 @@ I usually work for cloud and server area. Sometimes work for easy kernel issue.
 * 욕토 프로젝트로 시작하는 임베디드 리눅스 시스템 2018
 * 임베디드 시스템 아키텍처 2019
 * 유닉스·리눅스 시스템 관리 핸드북 5/e 2022
+
+# Books
+* 쇳밥일지 천현우
+* Sapiens ( reading )
