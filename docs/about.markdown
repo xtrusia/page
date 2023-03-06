@@ -58,4 +58,5 @@ I usually work for cloud and server area. Sometimes work for easy kernel issue.
 
 # Books
 * 쇳밥일지 천현우
+* 내 문장이 그렇게 이상한가요? 김정선
 * Sapiens ( reading )
