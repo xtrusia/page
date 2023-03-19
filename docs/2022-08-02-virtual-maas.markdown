@@ -38,6 +38,12 @@ sudo usermod -aG libvirt root
 sudo usermod -aG kvm root
 {% endhighlight %}
 
+Let's set host conf
+
+{% highlight shell %}
+
+{% endhighlight %}
+
 Let's create network for virtual maas, in this case, it is maas-mgmt, maas-private
 
 Stop default network
