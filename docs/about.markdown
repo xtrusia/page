@@ -61,3 +61,4 @@ I usually work for cloud and server area. Sometimes work for easy kernel issue.
 * 내 문장이 그렇게 이상한가요? 김정선
 * 번역자를 위한 우리말 공부 이강룡
 * Sapiens ( reading )
+* 눈물을 마시는 새 1권 ( reading )
