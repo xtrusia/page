@@ -95,6 +95,14 @@ Save below file as maas-private.xml
 </network>
 {% endhighlight %}
 
+Then define it. and start.
+
+{% highlight shell %}
+sudo virsh net-define maas-private.xml
+sudo virsh net-start maas-private
+sudo virsh net-autostart maas-private
+{% endhighlight %}
+
 Preparing storage for vms
 
 {% highlight shell %}
