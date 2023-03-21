@@ -14,6 +14,8 @@ This post mentions that how to set up virtual maas in one machine.
 * OS: Ubuntu 20.04 Focal
 * Hypervisor: VMware Workstation
 
+First of all, If you want to use lxd along with maas. please check dnsmasq conflict between maas and lxd.
+
 First, you need to install qemu-kvm, libvirt and related pkgs.
 
 {% highlight shell %}
