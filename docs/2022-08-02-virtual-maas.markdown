@@ -56,6 +56,8 @@ sudo usermod -aG kvm root
 
 Let's set host conf
 
+You may need to set user and group in /etc/libvirt/qemu.conf to root
+
 {% highlight shell %}
 
 {% endhighlight %}
