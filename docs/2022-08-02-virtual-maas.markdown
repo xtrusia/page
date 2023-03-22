@@ -5,6 +5,13 @@ date:   2022-08-02 13:25:12 +0900
 categories: jekyll update
 nav_order: 1
 ---
+# Notice
+First of all, If you want to use lxd along with maas. 
+Please check dnsmasq conflict between maas and lxd.
+
+If there is conflict, please disable systemd-resolved and reboot.
+
+
 # Setting up Virtual MAAS
 
 Configuring Virtual MAAS in one machine makes that you are able to test some kind of openstack env or kubernetes env with juju & charm.
@@ -14,7 +21,6 @@ This post mentions that how to set up virtual maas in one machine.
 * OS: Ubuntu 20.04 Focal
 * Hypervisor: VMware Workstation
 
-First of all, If you want to use lxd along with maas. please check dnsmasq conflict between maas and lxd.
 
 First, you need to install qemu-kvm, libvirt and related pkgs.
 
