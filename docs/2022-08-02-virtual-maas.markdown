@@ -5,7 +5,10 @@ date:   2022-08-02 13:25:12 +0900
 categories: jekyll update
 nav_order: 1
 ---
-# Notice
+
+# Setting up Virtual MAAS
+
+## Notice
 First of all, If you want to use lxd along with maas. 
 Please check dnsmasq conflict between maas and lxd.
 
@@ -16,7 +19,9 @@ vi /etc/dnsmasq.d/lxd
 except-interface=lxdbr0
 {% endhighlight %}
 
-# Setting up Virtual MAAS
+especially when I wanted to use zaza test. I faced this issue.
+
+## Setting Host
 
 Configuring Virtual MAAS in one machine makes that you are able to test some kind of openstack env or kubernetes env with juju & charm.
 
@@ -222,7 +227,7 @@ Preparing xml file for juju controller
 </domain>
 {% endhighlight %}
 
-Install MAAS
+## Install MAAS
 
 [Install MAAS](https://maas.io/docs/how-to-install-maas)
 
@@ -239,7 +244,7 @@ Then this machine needs Commission first.
 
 ![Commissioned machine](/assets/images/capture2.png)
 
-Install Juju
+## Install Juju
 
 [Install Juju](https://juju.is/docs/olm/installing-juju)
 [How to use MAAS with Juju](https://juju.is/docs/olm/maas)
@@ -248,7 +253,7 @@ When you add credential, there is a part for maas-oauth. then you need to copy b
 
 ![Commissioned machine](/assets/images/capture2.png)
 
-juju bootstrapping
+## juju bootstrapping
 
 {% highlight shell %}
 xtrusia@xtrusia:~$ juju bootstrap xtrusia
