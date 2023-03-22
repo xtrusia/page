@@ -30,8 +30,7 @@ First, you need to install qemu-kvm, libvirt and related pkgs.
 
 {% highlight shell %}
 
-sudo apt install qemu-kvm qemu-system-x86 libvirt-daemon-system 
-  libvirt-clients bridge-utils virtinst virt-manager
+sudo apt install qemu-kvm qemu-system-x86 libvirt-daemon-system libvirt-clients bridge-utils virtinst virt-manager
 
 {% endhighlight %}
 
