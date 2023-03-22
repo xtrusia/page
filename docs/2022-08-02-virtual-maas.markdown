@@ -9,7 +9,9 @@ nav_order: 1
 First of all, If you want to use lxd along with maas. 
 Please check dnsmasq conflict between maas and lxd.
 
-If there is conflict, please disable systemd-resolved and reboot.
+create /etc/dnsmasq.d/lxd
+and add
+except-interface=lxdbr0
 
 
 # Setting up Virtual MAAS
