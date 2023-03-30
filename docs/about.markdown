@@ -60,5 +60,6 @@ I usually work for cloud and server area. Sometimes work for easy kernel issue.
 * 쇳밥일지 - 천현우
 * 내 문장이 그렇게 이상한가요? - 김정선
 * 번역자를 위한 우리말 공부 - 이강룡
+* 수학의 눈으로 보면 다른 세상이 열린다 - 나동혁
 * Sapiens - Yuval Noah Harari ( reading )
 * 눈물을 마시는 새 1권 - 이영도 ( reading )
