@@ -12,11 +12,11 @@ https://docs.openstack.org/devstack/latest/
 git checkout -b 2023.1 origin/stable/2023.1
 
 
-
 local.conf
 
 {% highlight shell %}
 [[local|localrc]]
+TARGET_BRANCH=stable/2023.1
 ADMIN_PASSWORD=123qwe
 DATABASE_PASSWORD=$ADMIN_PASSWORD
 RABBIT_PASSWORD=$ADMIN_PASSWORD
