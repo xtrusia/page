@@ -17,77 +17,73 @@ a:hover {
   text-decoration: underline !important;
 }
 
-.container {
-  display: flex;
-}
+  .container {
+    display: flex;
+  }
 
-.sidebar {
-  max-width: 250px;
-  min-width: 250px;
-  width: 250px;
+  .sidebar {
+    max-width: 250px;
+    min-width: 250px;
+    width: 250px;
 
-  border-right: 1px solid #dddddd;
-  margin-right: 20px;
-}
+    border-right: 1px solid #dddddd;
+    margin-right: 20px;
+  }
 
-.header-container {
-  color: #fff;
-  padding: 10px 10px;
-  /* text-align: center; */
-  border-bottom: 1px solid #dddddd;
-}
+  .header-container {
+    color: #fff;
+    padding: 10px 10px;
+    /* text-align: center; */
+    border-bottom: 1px solid #dddddd;
+  }
 
-.header-container h1 {
-  margin: 0;
-}
+  .header-container h1 {
+    margin: 0;
+  }
 
-.header-container a {
-  text-decoration: none;
-}
+  .header-container a {
+    text-decoration: none;
+  }
 
-.header-container nav ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
+  .header-container nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
 
-.header-container nav ul li {
-  display: inline;
-  margin: 0 15px;
-}
+  .header-container nav ul li {
+    display: inline;
+    margin: 0 15px;
+  }
 
-.header-sidebar {
-  width: 200px;
-}
+  .header-sidebar {
+    width: 200px;
+  }
 
-.header-top {
-  display:flex;
-}
+  .header-top {
+    display:flex;
+  }
 
-.header-contents {
-  display: flex;
-  flex-direction: column;
-  color: black;
-}
+  .header-contents {
+    display: flex;
+    flex-direction: column;
+    color: black;
+  }
 
-.header-contents-title {
-  margin-left: 15px;
-  font-weight: bold;
-}
+  .header-contents-title {
+    margin-left: 15px;
+    font-weight: bold;
+  }
 
-@media (max-width: 768px) {
+@media only screen and (hover: none) and (pointer: coarse) {
 
   .container {
     /* display: flex; */
   }
   
   .sidebar {
-    max-width: 250px;
-    min-width: 250px;
-    width: 250px;
-  
-    border-right: 1px solid #dddddd;
-    margin-right: 20px;
+    border-bottom: 1px solid #dddddd;
+    /* margin-right: 20px; */
   }
   
   .header-container {
