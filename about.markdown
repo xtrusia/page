@@ -2,9 +2,7 @@
 layout: page
 title: About
 permalink: /about/
-nav_order: 0
 ---
-
 
 Please contact me by this email if you have any questions
 
@@ -32,7 +30,7 @@ I started Linux officially in 2001 with debian distribution, before that time, I
 - [https://github.com/opencontainers/runc/pull/3611](https://github.com/opencontainers/runc/pull/3611)
 
 # **juju charms**
-- [https://review.opendev.org/q/Seyeong+Kim](https://review.opendev.org/q/Seyeong+Kim)
+- [https://review.opendev.org/q/Seyeong+Kim](https://review.opendev.org/q/seyeong)
 
 # **SRU for ubuntu**
 - [https://launchpad.net/~seyeongkim/+uploaded-packages](https://launchpad.net/~seyeongkim/+uploaded-packages)

@@ -2,14 +2,10 @@
 layout: post
 title:  "Setting up Virtual MAAS"
 date:   2022-08-02 13:25:12 +0900
-categories:
-  - Linux Hacks
-  - MAAS
+categories: linux_hack
 
 nav_order: 1
 ---
-
-# Setting up Virtual MAAS
 
 ## Notice
 First of all, If you want to use lxd along with maas. 

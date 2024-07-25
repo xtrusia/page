@@ -1,0 +1,22 @@
+---
+layout: post
+title:  "제빵기 식빵"
+date:   2022-08-02 13:25:12 +0900
+categories: recipe
+
+nav_order: 1
+---
+
+오일 바르기
+
+우유 180ml
+
+소금 1tsp
+
+설탕 1.5Tsp
+
+버터 15g
+
+강력분 250g
+
+드라이이스트 1 tsp
