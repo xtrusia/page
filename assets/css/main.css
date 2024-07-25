@@ -59,3 +59,18 @@ a:hover {
 .header-sidebar {
   width: 200px;
 }
+
+.header-top {
+  display:flex;
+}
+
+.header-contents {
+  display: flex;
+  flex-direction: column;
+  color: black;
+}
+
+.header-contents-title {
+  margin-left: 15px;
+  font-weight: bold;
+}
