@@ -2,7 +2,10 @@
 layout: post
 title:  "Setting up Virtual MAAS"
 date:   2022-08-02 13:25:12 +0900
-categories: jekyll update
+categories:
+  - Linux Hacks
+  - MAAS
+
 nav_order: 1
 ---
 
